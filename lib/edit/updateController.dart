@@ -16,7 +16,7 @@ class UpdateController {
     required File images,
   }) async {
     final Uri url = Uri.parse(
-      "http://classified.globallywebsolutions.com/api/user/profile-update",
+      "//classfiy.onrender.com/api/user/profile-update",
     );
     var box = Hive.box("data");
     var token = box.get("token");

@@ -31,7 +31,7 @@ class RegisterController {
     required String pincode,
   }) async {
     final Uri url = Uri.parse(
-      "http://classified.globallywebsolutions.com/api/auth/register",
+      "https://classfiy.onrender.com/api/auth/register",
     );
     var request = http.MultipartRequest("POST", url);
     request.headers.addAll({"Accept": "application/json"});

@@ -30,9 +30,7 @@ class AddproductRegisterController {
     required String user_id,
     required File image,
   }) async {
-    final Uri url = Uri.parse(
-      'http://classified.globallywebsolutions.com/api/Add/product',
-    );
+    final Uri url = Uri.parse('//classfiy.onrender.com/api/Add/product');
     var request = http.MultipartRequest("POST", url);
     request.headers.addAll({
       "Accept": "application/json", // Ensure content type is correct
@@ -48,7 +46,7 @@ class AddproductRegisterController {
       "pincode": pincode,
       "address": address,
       "description": description,
-      "user_id" : user_id,
+      "user_id": user_id,
     });
 
     final http.StreamedResponse response = await request.send();

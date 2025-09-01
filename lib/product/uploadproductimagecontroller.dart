@@ -9,7 +9,7 @@
 //     required List<File> images,
 //   }) async {
 //     final Uri url = Uri.parse(
-//       'http://classified.globallywebsolutions.com/api/product/images',
+//       '//classfiy.onrender.com/api/product/images',
 //     );
 
 //     var request = http.MultipartRequest("POST", url);

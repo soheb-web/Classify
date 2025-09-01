@@ -166,7 +166,7 @@ class NameBody extends StatelessWidget {
             /// Profile Image
             ClipOval(
               child: Image.network(
-                "http://classified.globallywebsolutions.com" + image,
+                "//classfiy.onrender.com" + image,
                 fit: BoxFit.cover,
                 width: 44.w,
                 height: 44.h,

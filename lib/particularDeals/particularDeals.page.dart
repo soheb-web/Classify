@@ -22,8 +22,7 @@ class ParticularDealsPage extends ConsumerStatefulWidget {
 }
 
 class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
-  static const String baseImageUrl1 =
-      'http://classified.globallywebsolutions.com/public';
+  static const String baseImageUrl1 = '//classfiy.onrender.com/public';
   static const String baseImageUrl = '';
   static const String fallbackImageUrl =
       'https://www.irisoele.com/img/noimage.png';
