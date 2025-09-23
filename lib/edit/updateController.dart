@@ -16,7 +16,7 @@ class UpdateController {
     required File images,
   }) async {
     final Uri url = Uri.parse(
-      "//classfiy.onrender.com/api/user/profile-update",
+      "https://classify.mymarketplace.co.in/api/user/profile-update",
     );
     var box = Hive.box("data");
     var token = box.get("token");

@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 import 'package:shopping_app_olx/cagetory/choose.category.page.dart';
 import 'package:shopping_app_olx/chat/chat.page.dart';
@@ -82,9 +83,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     {"icon": Icon(Icons.tv_outlined, color: Colors.blue.shade400), "title": "Electronics", "subTitle": "Electronic"},
     {"icon": Icon(Icons.transform_outlined, color: Colors.blue.shade400), "title": "Commercials", "subTitle": "Commercial"},
   ];
-
-
-
   int tabBottom = 0;
   DateTime? lastBackPressTime;
   final TextEditingController _searchController = TextEditingController();
@@ -102,15 +100,45 @@ class _HomePageState extends ConsumerState<HomePage> {
         _searchQuery = _searchController.text;
       });
     });
+    _loadBannerAd();
   }
-
-
-
   @override
   void dispose() {
     _searchController.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
+
+  BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
+
+
+  // Replace with your AdMob Ad Unit ID or use the test ID
+
+  final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111'; // Test ID
+
+
+
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: _adUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('Banner Ad loaded');
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('Banner Ad failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
+
 
 
 
@@ -427,6 +455,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ],
                             ),
                           ),
+
+
+
+                          if (_isAdLoaded && _bannerAd != null)
+
+                            SizedBox(
+                              width: _bannerAd!.size.width.toDouble(),
+                              height: _bannerAd!.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd!),
+                            ),
+
+
+
                           SizedBox(height: 26.h),
                           Padding(
                             padding: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -809,6 +850,7 @@ false
       ),
     );
   }
+
 
 
 

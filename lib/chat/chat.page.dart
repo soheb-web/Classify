@@ -5,18 +5,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_app_olx/chat/chating.page.dart';
 import 'package:shopping_app_olx/chat/controller/inboxProvider.provider.dart';
+import 'package:shopping_app_olx/cloth/service/categoryController.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   const ChatPage({super.key});
-
   @override
   ConsumerState<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends ConsumerState<ChatPage> {
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() {
       ref.invalidate(inboxProvider);
@@ -30,14 +30,19 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 245, 242, 247),
       body: RefreshIndicator(
+
         onRefresh: () async {
           await ref.refresh(inboxProvider);
         },
-        child: inboxListASync.when(
+
+        child:
+
+        inboxListASync.when(
           data: (snap) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 SizedBox(height: 60.h),
 
                 /// Header
@@ -87,55 +92,80 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 SizedBox(height: 24.h),
 
                 /// Inbox List
+                ///
                 Expanded(
+
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: ListView.builder(
+                    child:
+
+                    ListView.builder(
                       itemCount: snap.inbox.length, // your API data length
                       itemBuilder: (context, index) {
+
                         return Padding(
                           padding: const EdgeInsets.only(top: 24),
                           child: GestureDetector(
                             onTap: () {
+
+                              final converId = snap.inbox[index].conversationId;
+                              final userid = snap.egedUser.id;
+
+
+
+                              final messagesList = ref.watch(markSeen(converId));
+
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                   builder:
                                       (context) => ChatingPage(
-                                        userid:
-                                            snap.inbox[index].otherUser.id
-                                                .toString(),
+                                        userid: snap.inbox[index].otherUser.id.toString(),
                                         name: snap.inbox[index].otherUser.name,
                                       ),
                                 ),
                               );
+
                             },
-                            child: NameBody(
-                              image:
-                                  snap.inbox[index].otherUser.profilePick
-                                      .toString(),
+                            child:
+
+
+                            NameBody(
+
+                              isReaded: snap.inbox[index].otherUser.isReaded,
+                              image: snap.inbox[index].otherUser.profilePick.toString(),
                               //"assets/chatimage1.png", // static for now
                               name: snap.inbox[index].otherUser.name,
                               //"Unknown", // from API
-                              txt: snap.inbox[index].lastMessage,
+                              txt: snap.inbox[index].otherUser.senderYou == true?   snap.inbox[index].lastMessage : snap.inbox[index].otherUser.isReaded == false? "New message":  snap.inbox[index].lastMessage,
                               //"No message yet",
-                              time:
-                                  "${snap.inbox[index].timestamp.hour}:${snap.inbox[index].timestamp.minute}",
+                              time: "${snap.inbox[index].timestamp.hour}:${snap.inbox[index].timestamp.minute}",
                               // "--:--",
                               isDivider: true,
+
+
                             ),
+
+
+
+
                           ),
                         );
                       },
                     ),
+
                   ),
                 ),
+
+
               ],
             );
           },
           error: (err, stack) => Center(child: Text("pull to refresh")),
           loading: () => const Center(child: CircularProgressIndicator()),
         ),
+
+
       ),
     );
   }
@@ -147,6 +177,7 @@ class NameBody extends StatelessWidget {
   final String txt;
   final String time;
   final bool isDivider;
+  final bool isReaded;
 
   const NameBody({
     super.key,
@@ -155,6 +186,7 @@ class NameBody extends StatelessWidget {
     required this.txt,
     required this.time,
     required this.isDivider,
+    required this.isReaded
   });
 
   @override
@@ -164,6 +196,7 @@ class NameBody extends StatelessWidget {
         Row(
           children: [
             /// Profile Image
+            ///
             ClipOval(
               child: Image.network(
                 "//classfiy.onrender.com" + image,
@@ -175,6 +208,7 @@ class NameBody extends StatelessWidget {
                         Icon(Icons.image_not_supported),
               ),
             ),
+
             SizedBox(width: 10.w),
 
             /// Name + Message
@@ -193,13 +227,14 @@ class NameBody extends StatelessWidget {
                   txt,
                   style: GoogleFonts.dmSans(
                     fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: isReaded ?  FontWeight.w500 : FontWeight.bold,
                     color: const Color.fromARGB(255, 97, 91, 104),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
+
             const Spacer(),
 
             /// Time
@@ -211,10 +246,13 @@ class NameBody extends StatelessWidget {
                 color: const Color.fromARGB(255, 97, 91, 104),
               ),
             ),
+
           ],
         ),
+
         SizedBox(height: 10.h),
         isDivider ? const Divider() : const SizedBox(),
+
       ],
     );
   }

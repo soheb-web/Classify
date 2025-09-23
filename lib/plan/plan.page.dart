@@ -11,23 +11,27 @@ import 'package:shopping_app_olx/new/new.service.dart';
 import 'package:shopping_app_olx/plan/reting.page.dart';
 import '../home/home.page.dart';
 
+
+
 class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
   @override
   ConsumerState<PlanPage> createState() => _PlanPageState();
 }
 
+
 class _PlanPageState extends ConsumerState<PlanPage> {
   int tabBottom = 0;
   DateTime? lastBackPressTime;
 
-
   @override
   Widget build(BuildContext context) {
+
     final plan = ref.watch(planProvider);
 
     return PopScope(
     canPop: false,
+
     onPopInvoked: (didPop) {
       if (!didPop) {
         Navigator.pushReplacement(
@@ -35,8 +39,9 @@ class _PlanPageState extends ConsumerState<PlanPage> {
           MaterialPageRoute(builder: (context) => HomePage(page: 3)),
         );
       }
-    },child: Scaffold(
+    },
 
+        child: Scaffold(
       body: plan.when(
         data: (snap) {
           return SingleChildScrollView(
@@ -75,8 +80,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                   ),
                 ),
 
-
-
                 Positioned(
                   top: 100.h,
                   left: 0,
@@ -86,6 +89,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         Center(
                           child: Text(
                             "Paid Plan",
@@ -154,10 +158,9 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                               SizedBox(height: 30.h),
 
                               SizedBox(
-                                height: 550.h, // Adjust this height as needed
+                                height: 550.h,
                                 child: TabBarView(
                                   children: [
-                                    // Single Listing Plans
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -212,8 +215,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                                                       duration:
                                                           e.duration.toString(),
                                                       desc: e.description,
-                                                      addBoost:
-                                                          e.boostCount
+                                                      addBoost: e.boostCount
                                                               .toString(),
                                                       bgColor: Colors.white,
                                                       plan: Colors.black,

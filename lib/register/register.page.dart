@@ -703,6 +703,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           ),
                           SizedBox(height: 30.h),
+
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size(
@@ -714,9 +715,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
+
                                   setState(() {
                                     isRegister = true;
                                   });
+
 
                                   await RegisterController.register(
                                     context: context,
@@ -734,7 +737,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                           (route) => false,
                                     );
                                   }
-                                } catch (e) {
+                                }
+
+                                catch (e) {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Registration failed. Please try again.")),
@@ -745,6 +750,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   });
                                   log('Registration error: ${e.toString()}');
                                 }
+
                               }
                             },
                             child: isRegister

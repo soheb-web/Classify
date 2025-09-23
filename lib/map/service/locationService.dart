@@ -9,6 +9,8 @@ part 'locationService.g.dart';
 abstract class LocationService {
   factory LocationService(Dio dio, {String baseUrl}) = _LocationService;
 
+
   @POST('/api/user/location')
   Future<LocationResModel> fetchLocation(@Body() LocationBodyModel body);
+
 }

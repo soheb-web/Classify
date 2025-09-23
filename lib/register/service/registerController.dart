@@ -1,20 +1,6 @@
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:shopping_app_olx/config/pretty.dio.dart';
-// import 'package:shopping_app_olx/register/model/registerBodyModel.dart';
-// import 'package:shopping_app_olx/register/model/registerResModel.dart';
-// import 'package:shopping_app_olx/register/service/registerService.dart';
 
-// final registerProvider =
-//     FutureProvider.family<RegisterResModel, RegisterBodyModel>((
-//       ref,
-//       body,
-//     ) async {
-//       final registerservice = RegisterService(await createDio());
-//       return registerservice.register(body);
-//     });
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,10 +17,12 @@ class RegisterController {
     required String pincode,
   }) async {
     final Uri url = Uri.parse(
-      "https://classfiy.onrender.com/api/auth/register",
+      "https://classify.mymarketplace.co.in/api/auth/register",
     );
+
     var request = http.MultipartRequest("POST", url);
     request.headers.addAll({"Accept": "application/json"});
+
 
     request.fields.addAll({
       "full_name": fullname,
@@ -43,6 +31,7 @@ class RegisterController {
       "city": city,
       "pincode": pincode,
     });
+
 
     try {
       final http.StreamedResponse response = await request.send();
@@ -68,5 +57,6 @@ class RegisterController {
     } catch (e) {
       throw Exception("Something went wrong :$e");
     }
+
   }
 }

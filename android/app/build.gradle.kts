@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.shopping_app_olx"
+    namespace = "com.myMarketPlace"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "26.2.11394342"
 
@@ -22,22 +22,43 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.shopping_app_olx"
+        applicationId = "com.myMarketPlace"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21 // Corrected for Kotlin DSL
+        minSdk = 23 // Corrected for Kotlin DSL
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+//    buildTypes {
+//        release {
+//            // TODO: Add your own signing config for the release build.
+//            // Signing with the debug keys for now, so `flutter run --release` works.
+//            signingConfig = signingConfigs.getByName("debug")
+//        }
+//    }
+
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("c:\\Users\\a2z\\Documents\\classify_olx_project\\classify.jks")
+            storePassword = "123456"
+            keyAlias = "classify"
+            keyPassword = "123456"
         }
     }
+
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true // Enable minification
+            isShrinkResources = true // Enable resource shrinking
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
 }
 
 flutter {

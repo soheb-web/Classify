@@ -10,7 +10,7 @@ part of 'chatService.dart';
 
 class _ChatService implements ChatService {
   _ChatService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://classfiy.onrender.com';
+    baseUrl ??= 'https://websocket.mymarketplace.co.in';
   }
 
   final Dio _dio;
@@ -57,6 +57,36 @@ class _ChatService implements ChatService {
           .compose(
             _dio.options,
             '/chats/history/${userid1}/${userid2}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late MessageListResponse _value;
+    try {
+      _value = MessageListResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<MessageListResponse> markSeen(
+    String conversation_id,
+    String user_id,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<MessageListResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/chats/mark_seen/${conversation_id}/${user_id}',
             queryParameters: queryParameters,
             data: _data,
           )
