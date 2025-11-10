@@ -83,6 +83,7 @@ class _ListingPageState extends ConsumerState<ListingPage> {
                 SizedBox(height: 30.h),
                 Expanded(
                   child: ListView.builder(
+scrollDirection: Axis.vertical,
                     padding: EdgeInsets.zero,
                     itemCount: listing.data!.sellList!.length,
                     itemBuilder: (context, index) {
@@ -105,7 +106,7 @@ class _ListingPageState extends ConsumerState<ListingPage> {
                           ),
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 280.h,
+                            height: 300.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15.r),
                               color: Colors.white,
@@ -117,7 +118,6 @@ class _ListingPageState extends ConsumerState<ListingPage> {
                                 top: 12.h,
                               ),
                               child:
-                              SingleChildScrollView(child:
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -398,17 +398,17 @@ class _ListingPageState extends ConsumerState<ListingPage> {
                                                   ),
                                                 );}else
 
-                          if(listing.data!.sellList![index].subcategory=="SpareParts") {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                          builder: (context) =>
+                                                        if(listing.data!.sellList![index].subcategory=="SpareParts") {
+                                                        Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                        builder: (context) =>
                               SparePartsFormPage(
-                          productToEdit: listing.data!.sellList![index], // Pass the specific SellList item
-                          ),
-                          ),
-                          );
-                          }else if(listing.data!.sellList![index].subcategory=="Bikes Bicycles") {
+                                                        productToEdit: listing.data!.sellList![index], // Pass the specific SellList item
+                                                        ),
+                                                        ),
+                                                        );
+                                                        }else if(listing.data!.sellList![index].subcategory=="Bikes Bicycles") {
 
                                                 Navigator.push(
                                                   context,
@@ -731,7 +731,7 @@ class _ListingPageState extends ConsumerState<ListingPage> {
                                                 Icon(Icons.edit,color: Color.fromARGB(255, 137, 26, 255),size: 35.sp,)
 
                                             )),
-SizedBox(width: 10.w,),
+                              SizedBox(width: 10.w,),
 
                                         GestureDetector(
 
@@ -914,7 +914,7 @@ SizedBox(width: 10.w,),
                                     ),
 
                                 ],
-                              ),),
+                              ),
                             ),
                           ),
                         ),

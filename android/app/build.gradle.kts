@@ -25,7 +25,7 @@ android {
         applicationId = "com.myMarketPlace"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23 // Corrected for Kotlin DSL
+        minSdk = flutter.minSdkVersion // Corrected for Kotlin DSL
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -48,6 +48,8 @@ android {
             keyPassword = "123456"
         }
     }
+
+
 
 
     buildTypes {

@@ -1236,13 +1236,18 @@ class ProfilePage extends ConsumerStatefulWidget {
   @override
   ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
+
+
 class _ProfilePageState extends ConsumerState<ProfilePage> {
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() => ref.invalidate(activePlanProvider));
   }
+
   bool _hasRefreshed = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -1255,22 +1260,30 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _hasRefreshed = true;
     }
   }
+
   Future<void> _onRefresh() async {
     final box = Hive.box("data");
     ref.invalidate(activePlanProvider);
     ref.invalidate(profileController("${box.get("id").toString()}"));
     await Future.delayed(Duration(seconds: 1));
   }
+
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("data");
     var token = box.get("token");
     final profileData = ref.watch(
-      profileController("${box.get("id").toString()}"),
+      profileController(box.get("id").toString()),
     );
+
     final activePlan = ref.watch(activePlanProvider);
-    return Scaffold(
-      body: Container(
+    return
+
+      Scaffold(
+      body:
+
+      Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -1284,8 +1297,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
+
                 Stack(children: [
+
                   Image.asset("assets/bgimage.png"),
+
+
                   profileData.when(
                     data: (data) {
                       return Padding(
@@ -1570,13 +1587,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     },
                     loading: () => Center(child: CircularProgressIndicator()),
                   ),
+
+
                 ]),
+
+
               ],
             ),
+
           ),
         ),
       ),
+
     );
+
   }
 
   Widget buildActivePlanCard(ActivePlan activePlan) {
@@ -1765,52 +1789,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       },
     );
   }
-/*
-
-  Future<void> downloadInvoice(BuildContext context, String gstNumber) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
-    );
-    try {
-      var box = await Hive.openBox("data");
-      String userId = box.get("id") ?? "0";
-      final url ="https://classify.mymarketplace.co.in/api/generateInvoice?user_id=$userId";
-          // 'https://classified.globallywebsolutions.com/api/generateInvoice?user_id=$userId&gst_number=$gstNumber';
-      final dio = Dio();
-      final dir = await getApplicationDocumentsDirectory();
-      final filePath = '${dir.path}/invoice_user_${userId}_$gstNumber.pdf';
-      final response = await dio.download(
-        url,
-        filePath,
-        options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-          validateStatus: (status) => status! < 500,
-        ),
-      );
-      Navigator.pop(context);
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invoice downloaded successfully!')),
-        );
-        await OpenFile.open(filePath);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to download invoice.')),
-        );
-      }
-    } catch (e) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
-  }
-
-*/
-
 
   Future<void> downloadInvoice(BuildContext context, String gstNumber) async {
     showDialog(
@@ -1866,8 +1844,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-
 }
+
 
 class EditProfileBody extends StatelessWidget {
   final IconData icon;

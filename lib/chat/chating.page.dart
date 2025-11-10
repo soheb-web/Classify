@@ -732,6 +732,7 @@ class _ChatingPageState extends ConsumerState<ChatingPage> with RouteAware {
                   ),
                 ),
               ),
+
               MessageInput(
                 controller: controller,
                 onSend: () {

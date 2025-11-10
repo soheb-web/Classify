@@ -5,16 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_app_olx/chat/chating.page.dart';
 import 'package:shopping_app_olx/chat/controller/inboxProvider.provider.dart';
-import 'package:shopping_app_olx/cloth/service/categoryController.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   const ChatPage({super.key});
   @override
   ConsumerState<ChatPage> createState() => _ChatPageState();
 }
-
 class _ChatPageState extends ConsumerState<ChatPage> {
-
   @override
   void initState() {
     super.initState();
@@ -22,29 +19,24 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       ref.invalidate(inboxProvider);
     });
   }
-
   @override
   Widget build(BuildContext context) {
     final inboxListASync = ref.watch(inboxProvider);
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 245, 242, 247),
       body: RefreshIndicator(
-
         onRefresh: () async {
           await ref.refresh(inboxProvider);
         },
-
         child:
-
         inboxListASync.when(
           data: (snap) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                SizedBox(height: 60.h),
 
+                SizedBox(height: 60.h),
                 /// Header
                 Row(
                   children: [
@@ -92,7 +84,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 SizedBox(height: 24.h),
 
                 /// Inbox List
-                ///
                 Expanded(
 
                   child: Padding(

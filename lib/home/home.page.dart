@@ -102,19 +102,15 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
     _loadBannerAd();
   }
+
   @override
   void dispose() {
     _searchController.dispose();
     _bannerAd?.dispose();
     super.dispose();
   }
-
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
-
-
-  // Replace with your AdMob Ad Unit ID or use the test ID
-
   final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111'; // Test ID
 
 
@@ -153,8 +149,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       return Scaffold(body: Center(child: Text("${homepageData.error}")));
     }
     return WillPopScope(
-
-
       onWillPop: () async {
         if (tabBottom != 0) {
           setState(() {
@@ -177,14 +171,9 @@ class _HomePageState extends ConsumerState<HomePage> {
         }
         return true;
       },
-
       child: Scaffold(
         body: tabBottom == 0
             ?
-
-
-
-
         RefreshIndicator(
           onRefresh: () async {
             ref.invalidate(homepageController);
@@ -210,7 +199,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       ),
                     ),
+
                     Image.asset("assets/bgimage.png"),
+
                     Positioned(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,46 +318,58 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ],
                           ),
                           SizedBox(height: 16.h),
+
+
                           Padding(
                             padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: SizedBox(
-                              height: 50.h,
-                              child: TextField(
-                                controller: _searchController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(top: 8.h, right: 20.r),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(Icons.search),
-                                  suffixIcon: _searchQuery.isNotEmpty
-                                      ? IconButton(
-                                    icon: Icon(Icons.clear),
-                                    onPressed: () {
-                                      _searchController.clear();
-                                      setState(() {
-                                        _searchQuery = '';
-                                      });
-                                    },
-                                  )
-                                      : null,
-                                  hintText: "Search Anything...",
-                                  hintStyle: GoogleFonts.dmSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromARGB(255, 97, 91, 104),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(40.r),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(40.r),
-                                    borderSide: BorderSide.none,
+                            child: GestureDetector(
+                              onTap: (){
+
+                              },
+                              child: SizedBox(
+                                height: 50.h,
+                                child: TextField(
+                                  onTap: (){
+
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewAllPage(false)));
+
+                                  },
+                                  controller: _searchController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(top: 8.h, right: 20.r),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(Icons.search),
+                                    suffixIcon: _searchQuery.isNotEmpty
+                                        ? IconButton(icon: Icon(Icons.clear),
+                                      onPressed: () {
+                                        _searchController.clear();
+                                        setState(() {
+                                          _searchQuery = '';
+                                        });
+                                      },
+                                    )
+                                        : null,
+                                    hintText: "Search Anything...",
+                                    hintStyle: GoogleFonts.dmSans(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color.fromARGB(255, 97, 91, 104),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(40.r),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(40.r),
+                                      borderSide: BorderSide.none,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+
                           SizedBox(height: 16.h),
                           Padding(
                             padding: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -415,13 +418,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                                           ),
                                           SizedBox(height: 6.h),
                                           SizedBox(
-                                            width: 75.w,
+                                            width: 85.w,
                                             child: Center(
                                               child: Text(
-                                                categoryList[index]['title'],
+                                                maxLines: 2,
+                                                categoryList[index]['title']=="Commercials"?
+                                              "Commercials\nVehicles":  categoryList[index]['title'],
                                                 textAlign: TextAlign.start,
                                                 style: GoogleFonts.dmSans(
-                                                  fontSize: 13.sp,
+                                                  fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Color.fromARGB(255, 97, 91, 104),
                                                 ),
@@ -456,14 +461,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                           ),
 
-
+SizedBox(height: 20.h,),
 
                           if (_isAdLoaded && _bannerAd != null)
-
-                            SizedBox(
-                              width: _bannerAd!.size.width.toDouble(),
-                              height: _bannerAd!.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd!),
+                            Center(  // Yeh add kiya center karne ke liye
+                              child: SizedBox(
+                                width: _bannerAd!.size.width.toDouble(),
+                                height: _bannerAd!.size.height.toDouble(),
+                                child: AdWidget(ad: _bannerAd!),
+                              ),
                             ),
 
 
@@ -766,12 +772,6 @@ false
           ),
         )
 
-
-
-
-
-
-
             : tabBottom == 1
             ? ChatPage()
 
@@ -972,25 +972,25 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
 
     return homepageData.when(
       data: (allproduct) {
-        final filteredProducts = allproduct.allProducts?.where((product) {
-          Map<String, dynamic> jsonData = {};
-          try {
-            if (product.jsonData != null) {
-              jsonData = jsonDecode(product.jsonData!) as Map<String, dynamic>;
-            }
-          } catch (e) {
-            print("Error parsing jsonData: $e");
-          }
-          final title = jsonData['title']?.toString().toLowerCase() ?? "";
-          final location = allproduct.location?.toLowerCase() ?? "";
-          final price = product.price?.toString().toLowerCase() ?? "";
-          final query = widget.searchQuery.toLowerCase();
-          return title.contains(query) || location.contains(query) || price.contains(query);
-        }).toList() ?? [];
+        // final filteredProducts = allproduct.allProducts?.where((product) {
+        //   Map<String, dynamic> jsonData = {};
+        //   try {
+        //     if (product.jsonData != null) {
+        //       jsonData = jsonDecode(product.jsonData!) as Map<String, dynamic>;
+        //     }
+        //   } catch (e) {
+        //     print("Error parsing jsonData: $e");
+        //   }
+        //   final title = jsonData['title']?.toString().toLowerCase() ?? "";
+        //   final location = allproduct.location?.toLowerCase() ?? "";
+        //   final price = product.price?.toString().toLowerCase() ?? "";
+        //   final query = widget.searchQuery.toLowerCase();
+        //   return title.contains(query) || location.contains(query) || price.contains(query);
+        // }).toList() ?? [];
 
         return Padding(
           padding: EdgeInsets.only(left: 20.w, right: 20.w),
-          child: filteredProducts.isEmpty
+          child: allproduct.allProducts!.isEmpty
               ? Center(
             child: Text(
               "No products found",
@@ -1006,7 +1006,7 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: filteredProducts.length,
+            itemCount: allproduct.allProducts!.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 20.w,
@@ -1014,7 +1014,7 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
               childAspectRatio: 0.65,
             ),
             itemBuilder: (context, index) {
-              final data = filteredProducts[index];
+              final data = allproduct.allProducts![index];
               final productId = data.id.toString();
               Map<String, dynamic> jsonData = {};
               try {
@@ -1026,6 +1026,9 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
               }
               final title = jsonData['title']?.toString() ?? 'No Title Available';
               final listingType = data.listingType ?? 'No listingType Available';
+              final city = data.city ?? 'No listingType Available';
+              final state = data.state ?? 'No listingType Available';
+              final conuntry = data.country ?? 'No listingType Available';
 
               return
 
@@ -1098,7 +1101,7 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
                   SizedBox(height: 15.h),
 
                   Container(
-                    width: 155.w,
+                    width:double.infinity,
                     height: 25.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30.r),
@@ -1108,11 +1111,15 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
                       padding: EdgeInsets.only(left: 6.w, right: 6.w),
                       child: Row(
                         children: [
-                        /*  Icon(
+
+  Icon(
                             Icons.location_on,
                             size: 15.sp,
                             color: Color.fromARGB(255, 137, 26, 255),
                           ),
+
+                          SizedBox(width: 5.w,),
+                          if(listingType=="Free")
                           Text(
                             allproduct.location ?? 'Unknown Location',
                             style: GoogleFonts.dmSans(
@@ -1120,31 +1127,11 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
                               fontWeight: FontWeight.w500,
                               color: Color.fromARGB(255, 137, 26, 255),
                             ),
-                          ),*/
-
-
-
-                          Icon(
-                            Icons.location_on,
-                            size: 15.sp,
-                            color: Color.fromARGB(255, 137, 26, 255),
                           ),
-
-
-                          if(listingType=="Free")
-
-                            Text(
-                              "Free" ?? 'Unknown Location',
-                              style: GoogleFonts.dmSans(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 137, 26, 255),
-                              ),
-                            ),
 
                           if( listingType=="city")
                             Text(
-                              "City" ?? 'Unknown Location',
+                             city ?? 'Unknown Location',
                               style: GoogleFonts.dmSans(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
@@ -1154,7 +1141,7 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
 
                           if(listingType=="state")
                             Text(
-                              "State" ?? 'Unknown Location',
+                              state ?? 'Unknown Location',
                               style: GoogleFonts.dmSans(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
@@ -1165,7 +1152,7 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
 
                           if(listingType=="country")
                             Text(
-                              "Country" ?? 'Unknown Location',
+                              conuntry ?? 'Unknown Location',
                               style: GoogleFonts.dmSans(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
@@ -1210,5 +1197,6 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
     );
   }
 }
+
 
 

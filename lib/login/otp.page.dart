@@ -184,28 +184,37 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                         },
                       ),
                       SizedBox(height: 20),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Edit your number?",
-                            style: GoogleFonts.dmSans(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF615B68),
-                            ),
+                   Container(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Edit your number?",
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF615B68),
+                                ),
+                              ),
+SizedBox(width: 20.w,),
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Edit Number",
+                                  style: GoogleFonts.dmSans(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF891AFF),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            " Edit Number",
-                            style: GoogleFonts.dmSans(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF891AFF),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+
 
                     ],
                   ),

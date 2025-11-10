@@ -23,13 +23,13 @@ class ViewClass {
       if (response.statusCode == 200 && response.data['status'] == true) {
         return response.data['data'];
       } else {
-        Fluttertoast.showToast(msg: response.data['message'] ?? 'Unknown error');
+        // Fluttertoast.showToast(msg: response.data['message'] ?? 'Unknown error');
         return null;
       }
     }
     catch (e, st) {
       log('API ERROR:', error: e, stackTrace: st);
-      Fluttertoast.showToast(msg: "Something went wrong");
+      // Fluttertoast.showToast(msg: "Something went wrong");
       return null;
     }
 

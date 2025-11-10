@@ -225,7 +225,7 @@ class _ChooseMoreCagegoryPageState extends State<ChooseMoreCagegoryPage> {
                           );
                         },
                         child: CategoryBody(
-                          image: "assets/furniture.png",
+                          image: "assets/furniture1.png",
                           txt: "Furniture",
                         ),
                       ),
@@ -271,7 +271,7 @@ class _ChooseMoreCagegoryPageState extends State<ChooseMoreCagegoryPage> {
                           );
                         },
                         child: CategoryBody(
-                          image: "assets/image.png",
+                          image: "assets/job1.png",
                           txt: "Job Seeker",
                         ),
                       ),

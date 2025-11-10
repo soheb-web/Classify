@@ -140,6 +140,10 @@ class _LoginPageState extends State<LoginPage> {
                               Fluttertoast.showToast(
                                 msg: "OTP sent to your phone number",
                               );
+                              setState(() {
+                                islogin = false;
+                              });
+
 
                               Navigator.push(
                                 context,

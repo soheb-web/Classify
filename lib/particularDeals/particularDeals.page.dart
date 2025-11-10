@@ -26,11 +26,14 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
   static const String baseImageUrl = '';
   static const String fallbackImageUrl =
       'https://www.irisoele.com/img/noimage.png';
+
+
   @override
   void initState() {
     super.initState();
     fetchProductData();
   }
+
 
   Future<void> fetchProductData() async {
     final box = Hive.box("data");
@@ -411,6 +414,8 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                                 ),
                               ),
                               SizedBox(width: 10.w),
+
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -444,6 +449,8 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                                   ),
                                 ],
                               ),
+
+
                             ],
                           ),
                         ),

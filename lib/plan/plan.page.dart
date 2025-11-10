@@ -90,6 +90,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+
                         Center(
                           child: Text(
                             "Paid Plan",
@@ -161,6 +162,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                                 height: 550.h,
                                 child: TabBarView(
                                   children: [
+
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -170,70 +172,75 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                                           ),
                                         );
                                       },
-                                      child: Column(
-                                        children: [
-                                          ...snap.data
-                                              .where(
-                                                (e) => e.planType == "single",
-                                              )
-                                              .map(
-                                                (e) => Padding(
-                                                  padding: EdgeInsets.only(
-                                                    top: 10.h,
-                                                  ),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      showModalBottomSheet(
-                                                        context: context,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.vertical(
-                                                                top:
-                                                                    Radius.circular(
-                                                                      20.r,
-                                                                    ),
-                                                              ),
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        builder:
-                                                            (
-                                                              _,
-                                                            ) => PaymentBottomSheet(
-                                                              amount:
-                                                                  double.tryParse(
-                                                                    e.price,
-                                                                  ) ??
-                                                                  0.0,
-                                                              id: e.id.toString(),
-                                                            ),
-                                                      );
-                                                    },
-                                                    child: PlanBody(
-                                                      planID: e.id.toString(),
-                                                      titlename: e.price,
-                                                      duration:
-                                                          e.duration.toString(),
-                                                      desc: e.description,
-                                                      addBoost: e.boostCount
-                                                              .toString(),
-                                                      bgColor: Colors.white,
-                                                      plan: Colors.black,
-                                                      month: Colors.black,
-                                                      name: Colors.black,
-                                                      title: Colors.black,
-                                                      listing_type:e.listing_type.toString()
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
 
+                                            ...snap.data
+                                                .where(
+                                                  (e) => e.planType == "single",
+                                                )
+                                                .map(
+                                                  (e) => Padding(
+                                                    padding: EdgeInsets.only(
+                                                      top: 10.h,
+                                                    ),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        showModalBottomSheet(
+                                                          context: context,
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.vertical(
+                                                                  top:
+                                                                      Radius.circular(
+                                                                        20.r,
+                                                                      ),
+                                                                ),
+                                                          ),
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          builder:
+                                                              (
+                                                                _,
+                                                              ) => PaymentBottomSheet(
+                                                                amount:
+                                                                    double.tryParse(
+                                                                      e.price,
+                                                                    ) ??
+                                                                    0.0,
+                                                                id: e.id.toString(),
+                                                              ),
+                                                        );
+                                                      },
+                                                      child: PlanBody(
+                                                        flag: false,
+                                                        planID: e.id.toString(),
+                                                        titlename: e.price,
+                                                        duration:
+                                                            e.duration.toString(),
+                                                        desc: e.description,
+                                                        addBoost: e.boostCount
+                                                                .toString(),
+                                                        bgColor: Colors.white,
+                                                        plan: Colors.black,
+                                                        month: Colors.black,
+                                                        name: Colors.black,
+                                                        title: Colors.black,
+                                                        listing_type:e.listing_type.toString()
+                                        
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              )
-                                              .toList(),
-                                        ],
+                                                )
+                                                .toList(),
+                                          ],
+                                        ),
                                       ),
                                     ),
 
                                     // Multiple Listing Plans
+
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -283,6 +290,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                                                       );
                                                     },
                                                     child: PlanBody(
+                                                      flag: true,
                                                       planID: e.id.toString(),
                                                       titlename: e.price,
                                                       duration:
@@ -305,47 +313,52 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                                         ],
                                       ),
                                     ),
+
                                   ],
                                 ),
                               ),
                             ],
                           ),
                         ),
+
                         SizedBox(height: 30.h),
 
 
-                        Text(
-                          "Ads Visibility ",
-                          style: GoogleFonts.dmSans(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(255, 33, 36, 38),
-                          ),
-                        ),
+                        // Text(
+                        //   "Ads Visibility ",
+                        //   style: GoogleFonts.dmSans(
+                        //     fontSize: 20.sp,
+                        //     fontWeight: FontWeight.w600,
+                        //     color: Color.fromARGB(255, 33, 36, 38),
+                        //   ),
+                        // ),
+
                         SizedBox(height: 15.h),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 106.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 20.w, top: 20.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                FeatureBody(
-                                  txt: "15 days listing for Free Plan",
-                                ),
-                                FeatureBody(
-                                  txt: "30 days listing for Paid Plan",
-                                ),
-                                SizedBox(height: 10.h),
-                              ],
-                            ),
-                          ),
-                        ),
+
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   height: 106.h,
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(20.r),
+                        //     color: Colors.white,
+                        //   ),
+                        //   child: Padding(
+                        //     padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                        //     child: Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         FeatureBody(
+                        //           txt: "15 days listing for Free Plan",
+                        //         ),
+                        //         FeatureBody(
+                        //           txt: "30 days listing for Paid Plan",
+                        //         ),
+                        //         SizedBox(height: 10.h),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+
                         SizedBox(height: 40.h),
 
                         SizedBox(height: 60.h),
@@ -373,6 +386,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
 // PLAN CARD
 class PlanBody extends StatefulWidget {
+  final bool flag;
   final String planID;
   final Color bgColor;
   final Color plan;
@@ -386,6 +400,7 @@ class PlanBody extends StatefulWidget {
   final String listing_type;
   const PlanBody({
     super.key,
+    required this.flag,
     required this.bgColor,
     required this.plan,
     required this.month,
@@ -418,6 +433,8 @@ class _PlanBodyState extends State<PlanBody> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+
             RichText(
               text: TextSpan(
                 style: GoogleFonts.dmSans(
@@ -427,60 +444,133 @@ class _PlanBodyState extends State<PlanBody> {
                 ),
                 children: [
                   TextSpan(text: '₹${widget.titlename}/'),
+                  widget.flag==true?
                   WidgetSpan(
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: Text(
-                      '${widget.duration} Days',
+                      '${widget.addBoost} Ad / month',
                       style: GoogleFonts.dmSans(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
                         color: widget.month,
                       ),
                     ),
-                  ),
+                  ): WidgetSpan(
+                    alignment: PlaceholderAlignment.baseline,
+                    baseline: TextBaseline.alphabetic,
+                    child: Text(
+                      '${widget.addBoost} Ad',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: widget.month,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 10.h),
-            Text(
-              "${widget.addBoost} Posts",
-              style: GoogleFonts.dmSans(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-                color: widget.name,
-              ),
-            ),
 
+            // SizedBox(height: 10.h),
             Row(
 
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                // Text(
+                //   "${widget.desc}",
+                //   style: GoogleFonts.dmSans(
+                //     fontSize: 14.sp,
+                //     fontWeight: FontWeight.w500,
+                //     color: widget.title,
+                //     letterSpacing: -0.50,
+                //   ),
+                // ),
+
+                Icon(Icons.star,size: 16.sp,),
+                SizedBox(width: 10.w,),
+                Text(
+                  "Radius",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: widget.title,
+                    letterSpacing: -0.50,
+                  ),
+                ),
+                SizedBox(width: 10.w,),
+                Icon(Icons.arrow_forward,size: 16.sp,),
+                SizedBox(width: 10.w,),
+                Text(
+                  widget.listing_type??"",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: widget.title,
+                    letterSpacing: -0.50,
+                  ),
+                ),
+
+              ],),
+            // SizedBox(height: 10.h,),
+            Row(
+              children: [
+                Icon(Icons.star,size: 16.sp,),
+                SizedBox(width: 10.w,),
+                Text(
+                  "${widget.duration} Days Live",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: widget.name,
+                  ),
+                ),
+              ],
+            ),
+         /*   Row(
+              children: [
+                Icon(Icons.star,size: 16.sp,),
+                SizedBox(width: 10.w,),
+                Text(
+                  "${widget.addBoost} Ads (1 ads/ day)",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: widget.name,
+                  ),
+                ),
+              ],
+            ),*/
+
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
+                Row(
+                  children: [
+                    Icon(Icons.star,size: 16.sp,),
+                    SizedBox(width: 10.w,),
+                    Text(
+                      "Unlimited Chats",
+                      style: GoogleFonts.dmSans(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: widget.title,
+                        letterSpacing: -0.50,
+                      ),
+                    ),
 
-              Text(
-                "${widget.desc}",
-                style: GoogleFonts.dmSans(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: widget.title,
-                  letterSpacing: -0.50,
+
+
+                  ],
                 ),
-              ),
 
+                Icon(Icons.arrow_forward_ios,size: 20,)
 
-              Text(
-                widget.listing_type??"",
-                style: GoogleFonts.dmSans(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: widget.title,
-                  letterSpacing: -0.50,
-                ),
-              ),
+              ],
+            ),
 
-
-            ],)
 
           ],
         ),
