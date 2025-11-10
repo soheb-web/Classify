@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-
 Dio createDio() {
   final dio = Dio();
   dio.interceptors.add(
@@ -49,9 +48,6 @@ Dio createDio() {
           return;
         }
 
-
-
-
         handler.next(e);
       },
     ),
@@ -73,6 +69,5 @@ Dio createDio2() {
     ),
   );
 
- 
   return dio;
 }

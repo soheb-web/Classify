@@ -47,7 +47,7 @@ class _ChatingPageState extends ConsumerState<ChatingPage> {
     });
 
   }
-*//*
+*/ /*
 
 
 
@@ -465,8 +465,6 @@ class MessageInput extends StatelessWidget {
 }
 */
 
-
-
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
@@ -628,8 +626,8 @@ class _ChatingPageState extends ConsumerState<ChatingPage> with RouteAware {
                 child: RefreshIndicator(
                   onRefresh: () async {
                     // await Future.wait([
-                      ref.refresh(messageProvider(widget.userid));
-                      Future(() => _reconnectWebSocket());
+                    ref.refresh(messageProvider(widget.userid));
+                    Future(() => _reconnectWebSocket());
                     // ]);
                   },
                   child: StreamBuilder(
@@ -649,59 +647,121 @@ class _ChatingPageState extends ConsumerState<ChatingPage> with RouteAware {
                           ),
                         );
                       }
+                      ////////////////////////////////////////////////     ye bhi sahi code hai ////////////////////////////////
+
+                      // if (snapshot.hasData) {
+                      //   try {
+                      //     final data = jsonDecode(snapshot.requireData);
+                      //     final messageId = data["id"];
+                      //     final existingIndex = snap.chat.indexWhere(
+                      //       (m) =>
+                      //           m.id == "sender" &&
+                      //           m.message == data['message'],
+                      //     );
+                      //     if (existingIndex != -1) {
+                      //       setState(() {
+                      //         snap.chat[existingIndex] = Chat(
+                      //           id: messageId,
+                      //           sender: int.parse(data['sender_id']),
+                      //           message: data['message'],
+                      //           timestamp:
+                      //               data['timestamp'] != null
+                      //                   ? DateTime.parse(data['timestamp'])
+                      //                   : DateTime.now(),
+                      //         );
+                      //       });
+                      //     } else if (!snap.chat.any((m) => m.id == messageId)) {
+                      //       setState(() {
+                      //         snap.chat.add(
+                      //           Chat(
+                      //             id: messageId,
+                      //             sender: int.parse(data['sender_id']),
+                      //             message: data['message'],
+                      //             timestamp:
+                      //                 data['timestamp'] != null
+                      //                     ? DateTime.parse(data['timestamp'])
+                      //                     : DateTime.now(),
+                      //           ),
+                      //         );
+                      //       });
+                      //     }
+                      //     _scrollToBottom();
+                      //   } catch (e) {
+                      //     log("Error parsing: $e");
+                      //   }
+                      // }
 
                       if (snapshot.hasData) {
                         try {
                           final data = jsonDecode(snapshot.requireData);
                           final messageId = data["id"];
                           final existingIndex = snap.chat.indexWhere(
-                                  (m) => m.id == "sender" && m.message == data['message']);
-                          if (existingIndex != -1) {
-                            setState(() {
-                              snap.chat[existingIndex] = Chat(
-                                id: messageId,
-                                sender: int.parse(data['sender_id']),
-                                message: data['message'],
-                                timestamp: data['timestamp'] != null
-                                    ? DateTime.parse(data['timestamp'])
-                                    : DateTime.now(),
-                              );
-                            });
-                          } else if (!snap.chat.any((m) => m.id == messageId)) {
-                            setState(() {
-                              snap.chat.add(
-                                Chat(
+                            (m) =>
+                                m.id == "sender" &&
+                                m.message == data['message'],
+                          );
+
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (existingIndex != -1) {
+                              setState(() {
+                                snap.chat[existingIndex] = Chat(
                                   id: messageId,
                                   sender: int.parse(data['sender_id']),
                                   message: data['message'],
-                                  timestamp: data['timestamp'] != null
-                                      ? DateTime.parse(data['timestamp'])
-                                      : DateTime.now(),
-                                ),
-                              );
-                            });
-                          }
-                          _scrollToBottom();
+                                  timestamp:
+                                      data['timestamp'] != null
+                                          ? DateTime.parse(data['timestamp'])
+                                          : DateTime.now(),
+                                );
+                              });
+                            } else if (!snap.chat.any(
+                              (m) => m.id == messageId,
+                            )) {
+                              setState(() {
+                                snap.chat.add(
+                                  Chat(
+                                    id: messageId,
+                                    sender: int.parse(data['sender_id']),
+                                    message: data['message'],
+                                    timestamp:
+                                        data['timestamp'] != null
+                                            ? DateTime.parse(data['timestamp'])
+                                            : DateTime.now(),
+                                  ),
+                                );
+                              });
+                            }
+                            _scrollToBottom();
+                          });
                         } catch (e) {
                           log("Error parsing: $e");
                         }
                       }
 
                       // Sort messages by timestamp to ensure correct order
-                      final sortedChats = snap.chat..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+                      final sortedChats =
+                          snap.chat..sort(
+                            (a, b) => a.timestamp.compareTo(b.timestamp),
+                          );
 
                       return ListView.builder(
                         controller: _scrollController,
                         itemCount: sortedChats.length,
                         itemBuilder: (context, index) {
                           final e = sortedChats[index];
-                          final currentDate = DateTime(e.timestamp.year, e.timestamp.month, e.timestamp.day);
-                          final showDateHeader = index == 0 ||
-                              currentDate != DateTime(
-                                sortedChats[index - 1].timestamp.year,
-                                sortedChats[index - 1].timestamp.month,
-                                sortedChats[index - 1].timestamp.day,
-                              );
+                          final currentDate = DateTime(
+                            e.timestamp.year,
+                            e.timestamp.month,
+                            e.timestamp.day,
+                          );
+                          final showDateHeader =
+                              index == 0 ||
+                              currentDate !=
+                                  DateTime(
+                                    sortedChats[index - 1].timestamp.year,
+                                    sortedChats[index - 1].timestamp.month,
+                                    sortedChats[index - 1].timestamp.day,
+                                  );
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -714,13 +774,19 @@ class _ChatingPageState extends ConsumerState<ChatingPage> with RouteAware {
                                     style: GoogleFonts.dmSans(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w600,
-                                      color: const Color.fromARGB(255, 97, 91, 104),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        97,
+                                        91,
+                                        104,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                               ChatBubble(
-                                isUserMessage: e.sender.toString() != id.toString(),
+                                isUserMessage:
+                                    e.sender.toString() != id.toString(),
                                 message: e.message,
                                 dateTime: e.timestamp.toString(),
                               ),
@@ -761,18 +827,20 @@ class _ChatingPageState extends ConsumerState<ChatingPage> with RouteAware {
             ],
           );
         },
-        error: (err, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Error: $err"),
-              ElevatedButton(
-                onPressed: () => ref.invalidate(messageProvider(widget.userid)),
-                child: Text("Retry"),
+        error:
+            (err, stack) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Error: $err"),
+                  ElevatedButton(
+                    onPressed:
+                        () => ref.invalidate(messageProvider(widget.userid)),
+                    child: Text("Retry"),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
@@ -801,10 +869,16 @@ class ChatBubble extends StatelessWidget {
     }
 
     final today = DateTime(now.year, now.month, now.day);
-    final messageDate = DateTime(parsedDateTime.year, parsedDateTime.month, parsedDateTime.day);
+    final messageDate = DateTime(
+      parsedDateTime.year,
+      parsedDateTime.month,
+      parsedDateTime.day,
+    );
     final difference = today.difference(messageDate).inDays;
 
-    final timeFormat = DateFormat('h:mm a').format(parsedDateTime); // e.g., "6:42 PM"
+    final timeFormat = DateFormat(
+      'h:mm a',
+    ).format(parsedDateTime); // e.g., "6:42 PM"
 
     if (difference == 0) {
       return "Today, $timeFormat";
@@ -829,9 +903,10 @@ class ChatBubble extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: isUserMessage
-                ? Colors.white
-                : const Color.fromARGB(255, 137, 26, 255),
+            color:
+                isUserMessage
+                    ? Colors.white
+                    : const Color.fromARGB(255, 137, 26, 255),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.r),
               topRight: Radius.circular(20.r),
@@ -840,18 +915,20 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: isUserMessage
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.end,
+            crossAxisAlignment:
+                isUserMessage
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.end,
             children: [
               Text(
                 message,
                 style: GoogleFonts.dmSans(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
-                  color: isUserMessage
-                      ? const Color.fromARGB(255, 97, 91, 104)
-                      : Colors.white,
+                  color:
+                      isUserMessage
+                          ? const Color.fromARGB(255, 97, 91, 104)
+                          : Colors.white,
                 ),
               ),
               SizedBox(height: 4.h),
@@ -860,9 +937,15 @@ class ChatBubble extends StatelessWidget {
                 style: GoogleFonts.dmSans(
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w400,
-                  color: isUserMessage
-                      ? const Color.fromARGB(255, 97, 91, 104).withOpacity(0.7)
-                      : Colors.white.withOpacity(0.7),
+                  color:
+                      isUserMessage
+                          ? const Color.fromARGB(
+                            255,
+                            97,
+                            91,
+                            104,
+                          ).withOpacity(0.7)
+                          : Colors.white.withOpacity(0.7),
                 ),
               ),
             ],
@@ -885,7 +968,8 @@ class MessageInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+      // color: Colors.white,
       padding: EdgeInsets.all(8.w),
       child: Row(
         children: [
@@ -898,26 +982,44 @@ class MessageInput extends StatelessWidget {
                 fillColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(40.r),
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(color: Colors.black, width: 1.w),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(40.r),
-                  borderSide: BorderSide.none,
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: onSend,
-                  child: Icon(
-                    Icons.send,
+                  borderSide: BorderSide(
                     color: const Color.fromARGB(255, 137, 26, 255),
-                    size: 25.sp,
+                    width: 1.w,
                   ),
                 ),
+                // suffixIcon: GestureDetector(
+                //   onTap: onSend,
+                //   child: Icon(
+                //     Icons.send,
+                //     color: const Color.fromARGB(255, 137, 26, 255),
+                //     size: 25.sp,
+                //   ),
+                // ),
                 hintText: "Type Message...",
                 hintStyle: GoogleFonts.dmSans(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   color: const Color.fromARGB(255, 97, 91, 104),
                 ),
+              ),
+            ),
+          ),
+          SizedBox(width: 10.w),
+          InkWell(
+            onTap: onSend,
+            child: Container(
+              width: 55.w,
+              height: 55.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color.fromARGB(255, 137, 26, 255),
+              ),
+              child: Center(
+                child: Icon(Icons.send, color: Colors.white, size: 25.sp),
               ),
             ),
           ),

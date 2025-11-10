@@ -17,7 +17,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firbaseOption.dart';
 import 'notificationService.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -28,8 +27,8 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
   @override
@@ -38,8 +37,6 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   late final StreamSubscription<InternetStatus> _listener;
-
-
 
   @override
   void initState() {
@@ -83,13 +80,10 @@ class _MyAppState extends ConsumerState<MyApp> {
       final String title = message.data['fullname'] ?? 'No Title';
 
       navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (_) => ChatingPage(userid: id, name: title),
-        ),
+        MaterialPageRoute(builder: (_) => ChatingPage(userid: id, name: title)),
       );
     }
   }
-
 
   @override
   void dispose() {
@@ -110,10 +104,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       builder: (context, child) {
         return SafeArea(
           child: MaterialApp(
-
             navigatorKey: navigatorKey,
             title: 'Flutter Demo',
-
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             ),

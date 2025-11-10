@@ -29,10 +29,8 @@ class _OtpPageState extends ConsumerState<OtpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Stack(
               children: [
-
                 Container(
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
@@ -128,15 +126,14 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                           });
                         },
                         onSubmit: (value) async {
-
-                          final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+                          final FirebaseMessaging _firebaseMessaging =
+                              FirebaseMessaging.instance;
                           String? token = await _firebaseMessaging.getToken();
                           print('FCM Token: $token');
                           final otpBody = OtpBodyModel(
                             phoneNumber: widget.phone,
                             otp: value,
-                            fcm_Token:token!,
-
+                            fcm_Token: token!,
                           );
 
                           try {
@@ -144,9 +141,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                               otpProvider(otpBody).future,
                             );
 
-
                             log("TOKEN SAVED: ${response.token}");
-
 
                             var box = await Hive.box("data");
                             await box.put("token", response.token.toString());
@@ -184,47 +179,41 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                         },
                       ),
                       SizedBox(height: 20),
-                   Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Edit your number?",
+                      Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Edit your number?",
+                              style: GoogleFonts.dmSans(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF615B68),
+                              ),
+                            ),
+                            SizedBox(width: 20.w),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Edit Number",
                                 style: GoogleFonts.dmSans(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF615B68),
+                                  color: Color(0xFF891AFF),
                                 ),
                               ),
-SizedBox(width: 20.w,),
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "Edit Number",
-                                  style: GoogleFonts.dmSans(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF891AFF),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-
-
+                      ),
                     ],
                   ),
                 ),
-
-
-
               ],
             ),
-
           ],
         ),
       ),

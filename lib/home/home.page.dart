@@ -1,7 +1,3 @@
-
-
-
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +30,7 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-
 class _HomePageState extends ConsumerState<HomePage> {
-
   final List<String> imageList = [
     'assets/image1.jpg',
     'assets/image2.jpg',
@@ -75,21 +69,46 @@ class _HomePageState extends ConsumerState<HomePage> {
     },
   ];
   final List<Map<String, dynamic>> categoryList = [
-    {"icon": Icon(Icons.car_rental, color: Colors.blue.shade400), "title": "Cars", "subTitle": "Car"},
-    {"icon": Icon(Icons.house_outlined, color: Colors.blue.shade400), "title": "Properties", "subTitle": "Property"},
-    {"icon": Icon(Icons.mobile_friendly, color: Colors.blue.shade400), "title": "Mobiles", "subTitle": "Mobile"},
-    {"icon": Icon(Icons.badge_outlined, color: Colors.blue.shade400), "title": "Jobs", "subTitle": "Job"},
-    {"icon": Icon(Icons.bike_scooter_outlined, color: Colors.blue.shade400), "title": "Bikes", "subTitle": "Bike"},
-    {"icon": Icon(Icons.tv_outlined, color: Colors.blue.shade400), "title": "Electronics", "subTitle": "Electronic"},
-    {"icon": Icon(Icons.transform_outlined, color: Colors.blue.shade400), "title": "Commercials", "subTitle": "Commercial"},
+    {
+      "icon": Icon(Icons.car_rental, color: Colors.blue.shade400),
+      "title": "Cars",
+      "subTitle": "Car",
+    },
+    {
+      "icon": Icon(Icons.house_outlined, color: Colors.blue.shade400),
+      "title": "Properties",
+      "subTitle": "Property",
+    },
+    {
+      "icon": Icon(Icons.mobile_friendly, color: Colors.blue.shade400),
+      "title": "Mobiles",
+      "subTitle": "Mobile",
+    },
+    {
+      "icon": Icon(Icons.badge_outlined, color: Colors.blue.shade400),
+      "title": "Jobs",
+      "subTitle": "Job",
+    },
+    {
+      "icon": Icon(Icons.bike_scooter_outlined, color: Colors.blue.shade400),
+      "title": "Bikes",
+      "subTitle": "Bike",
+    },
+    {
+      "icon": Icon(Icons.tv_outlined, color: Colors.blue.shade400),
+      "title": "Electronics",
+      "subTitle": "Electronic",
+    },
+    {
+      "icon": Icon(Icons.transform_outlined, color: Colors.blue.shade400),
+      "title": "Commercials",
+      "subTitle": "Commercial",
+    },
   ];
   int tabBottom = 0;
   DateTime? lastBackPressTime;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-
-
-
 
   @override
   void initState() {
@@ -109,11 +128,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     _bannerAd?.dispose();
     super.dispose();
   }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111'; // Test ID
-
-
 
   void _loadBannerAd() {
     _bannerAd = BannerAd(
@@ -134,9 +152,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
     )..load();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -172,616 +187,871 @@ class _HomePageState extends ConsumerState<HomePage> {
         return true;
       },
       child: Scaffold(
-        body: tabBottom == 0
-            ?
-        RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(homepageController);
-            ref.invalidate(allCategoryController);
-            await ref.read(homepageController.future);
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-
-
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Color(0xFFECD7FD), Color(0xFFF5F2F7)],
-                        ),
-                      ),
-                    ),
-
-                    Image.asset("assets/bgimage.png"),
-
-                    Positioned(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 60.h),
-                          Row(
-                            children: [
-                              SizedBox(width: 20.w),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => MapPage(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: 50.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color(0xFFFFFFFF),
-                                  ),
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: Color(0xFF891AFF),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 6.w),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => MapPage(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Your Location",
-                                      style: GoogleFonts.dmSans(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(255, 97, 91, 104),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 220.w,
-                                      child: locationAsyncValue.when(
-                                        data: (location) => Text(
-                                          location,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.dmSans(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color.fromARGB(255, 137, 26, 255),
-                                          ),
-                                        ),
-                                        loading: () => Center(
-                                          child: SizedBox(
-                                            width: 50.w,
-                                            height: 50.h,
-                                            child: const CircularProgressIndicator(),
-                                          ),
-                                        ),
-                                        error: (err, stack) => Text(
-                                          "Location unavailable",
-                                        ),
-                                      ),
-                                    ),
+        body:
+            tabBottom == 0
+                ? RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(homepageController);
+                    ref.invalidate(allCategoryController);
+                    await ref.read(homepageController.future);
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFECD7FD),
+                                    Color(0xFFF5F2F7),
                                   ],
                                 ),
                               ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => ShowlikePage(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: 50.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                    child: Icon(Icons.favorite_border),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                              Container(
-                                width: 50.w,
-                                height: 50.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                                child: Center(
-                                  child: Icon(Icons.notifications_none),
-                                ),
-                              ),
-                              SizedBox(width: 20.w),
-                            ],
-                          ),
-                          SizedBox(height: 16.h),
-
-
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: GestureDetector(
-                              onTap: (){
-
-                              },
-                              child: SizedBox(
-                                height: 50.h,
-                                child: TextField(
-                                  onTap: (){
-
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewAllPage(false)));
-
-                                  },
-                                  controller: _searchController,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 8.h, right: 20.r),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(Icons.search),
-                                    suffixIcon: _searchQuery.isNotEmpty
-                                        ? IconButton(icon: Icon(Icons.clear),
-                                      onPressed: () {
-                                        _searchController.clear();
-                                        setState(() {
-                                          _searchQuery = '';
-                                        });
-                                      },
-                                    )
-                                        : null,
-                                    hintText: "Search Anything...",
-                                    hintStyle: GoogleFonts.dmSans(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromARGB(255, 97, 91, 104),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(40.r),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(40.r),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
-                          ),
 
-                          SizedBox(height: 16.h),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 130.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: ListView.builder(
-                                itemCount: categoryList.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => ClothingPage(
-                                              categoryList[index]['title'],
-                                              categoryList[index]['subTitle'],
+                            Image.asset("assets/bgimage.png"),
+
+                            Positioned(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 40.h),
+                                  Row(
+                                    children: [
+                                      SizedBox(width: 20.w),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) => MapPage(),
                                             ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 50.w,
+                                          height: 50.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFFFFFFFF),
                                           ),
-                                        );
-                                      },
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 54.w,
-                                            height: 54.h,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color.fromARGB(255, 246, 245, 250),
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: ClipOval(
-                                                child: categoryList[index]['icon'],
-                                              ),
-                                            ),
+                                          child: Icon(
+                                            Icons.location_on,
+                                            color: Color(0xFF891AFF),
                                           ),
-                                          SizedBox(height: 6.h),
-                                          SizedBox(
-                                            width: 85.w,
-                                            child: Center(
-                                              child: Text(
-                                                maxLines: 2,
-                                                categoryList[index]['title']=="Commercials"?
-                                              "Commercials\nVehicles":  categoryList[index]['title'],
-                                                textAlign: TextAlign.start,
-                                                style: GoogleFonts.dmSans(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color.fromARGB(255, 97, 91, 104),
+                                        ),
+                                      ),
+                                      SizedBox(width: 6.w),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) => MapPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Your Location",
+                                              style: GoogleFonts.dmSans(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color.fromARGB(
+                                                  255,
+                                                  97,
+                                                  91,
+                                                  104,
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            SizedBox(
+                                              width: 220.w,
+                                              child: locationAsyncValue.when(
+                                                data:
+                                                    (location) => Text(
+                                                      location,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: GoogleFonts.dmSans(
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Color.fromARGB(
+                                                          255,
+                                                          137,
+                                                          26,
+                                                          255,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                loading:
+                                                    () => Center(
+                                                      child: SizedBox(
+                                                        width: 50.w,
+                                                        height: 50.h,
+                                                        child:
+                                                            const CircularProgressIndicator(),
+                                                      ),
+                                                    ),
+                                                error:
+                                                    (err, stack) => Text(
+                                                      "Location unavailable",
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 24.h),
-                          SizedBox(
-                            height: 180.h,
-                            child: CarouselSlider(
-                              scrollPhysics: NeverScrollableScrollPhysics(),
-                              slideTransform: DefaultTransform(),
-                              autoSliderTransitionTime: Duration(seconds: 1),
-                              autoSliderDelay: Duration(seconds: 2),
-                              enableAutoSlider: true,
-                              unlimitedMode: true,
-                              children: [
-                                Image.asset('assets/frame.png'),
-                                Image.asset('assets/frame1.png'),
-                                Image.asset('assets/frame2.png'),
-                                Image.asset("assets/frame3.png"),
-                                Image.asset("assets/frame4.png"),
-                              ],
-                            ),
-                          ),
-
-SizedBox(height: 20.h,),
-
-                          if (_isAdLoaded && _bannerAd != null)
-                            Center(  // Yeh add kiya center karne ke liye
-                              child: SizedBox(
-                                width: _bannerAd!.size.width.toDouble(),
-                                height: _bannerAd!.size.height.toDouble(),
-                                child: AdWidget(ad: _bannerAd!),
-                              ),
-                            ),
-
-
-
-                          SizedBox(height: 26.h),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Top Deal",
-                                  style: GoogleFonts.dmSans(
-                                    fontSize: 26.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color.fromARGB(255, 36, 33, 38),
+                                      Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder:
+                                                  (context) => ShowlikePage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 50.w,
+                                          height: 50.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child: Center(
+                                            child: Icon(Icons.favorite_border),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Container(
+                                        width: 50.w,
+                                        height: 50.h,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Icon(Icons.notifications_none),
+                                        ),
+                                      ),
+                                      SizedBox(width: 20.w),
+                                    ],
                                   ),
-                                ),
+                                  SizedBox(height: 16.h),
 
-
-                                InkWell(
-                                  onTap: (){
-
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewAllPage(true)));
-                                  },
-                                  child: Container(
-                                    width: 65.w,
-                                    height: 26.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(35.45.r),
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 20.w,
+                                      right: 20.w,
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        "View all",
-                                        style: GoogleFonts.dmSans(
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color.fromARGB(255, 97, 91, 104),
+                                    child: GestureDetector(
+                                      onTap: () {},
+                                      child: SizedBox(
+                                        height: 50.h,
+                                        child: TextField(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (context) =>
+                                                        ViewAllPage(false),
+                                              ),
+                                            );
+                                          },
+                                          controller: _searchController,
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                              top: 8.h,
+                                              right: 20.r,
+                                            ),
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            prefixIcon: Icon(Icons.search),
+                                            suffixIcon:
+                                                _searchQuery.isNotEmpty
+                                                    ? IconButton(
+                                                      icon: Icon(Icons.clear),
+                                                      onPressed: () {
+                                                        _searchController
+                                                            .clear();
+                                                        setState(() {
+                                                          _searchQuery = '';
+                                                        });
+                                                      },
+                                                    )
+                                                    : null,
+                                            hintText: "Search Anything...",
+                                            hintStyle: GoogleFonts.dmSans(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color.fromARGB(
+                                                255,
+                                                97,
+                                                91,
+                                                104,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40.r),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40.r),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 300.h,
-                            child: homepageData.when(
-                              data: (listing) {
-                                return ListView.builder(
-                                  key: ValueKey(listing), // Ensure ListView rebuilds on data change
-                                  padding: EdgeInsets.zero,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: listing.latestListings?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    final product = listing.latestListings![index];
-                                    final productId = product.id.toString();
-                                    Map<String, dynamic> jsonData = {};
-                                    try {
-                                      if (product.jsonData != null) {
-                                        jsonData = jsonDecode(product.jsonData!) as Map<String, dynamic>;
-                                      }
-                                    } catch (e) {
-                                      print("Error parsing jsonData: $e");
-                                    }
-                                    final title = jsonData['title']?.toString() ?? 'No Title Available';
 
-                                    return Padding(
-                                      padding: EdgeInsets.only(top: 21.h, left: 20.w),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    CupertinoPageRoute(
-                                                      builder: (context) => ParticularDealsPage(
-                                                        id: productId,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(15.r),
-                                                  child: Image.network(
-                                                    product.image ?? "https://www.irisoele.com/img/noimage.png",
-                                                    width: 240.w,
-                                                    height: 160.h,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                right: 15.w,
-                                                top: 15.h,
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    bool isLikes = product.userlike ?? false;
-                                                    final body = LikeBodyModel(
-                                                      productId: productId,
-                                                      type: "like",
-                                                      userId: "${box.get("id")}",
-                                                    );
-                                                    await ref.read(likeNotiferProvider.notifier).likeProduct(body);
-                                                    ref.invalidate(homepageController);
-                                                    ref.invalidate(allCategoryController);
-                                                    await Future.delayed(Duration.zero);
-                                                    Fluttertoast.showToast(
-                                                      msg: isLikes ? "Removed from Liked" : "Added to Liked",
-                                                      toastLength: Toast.LENGTH_SHORT,
-                                                      gravity: ToastGravity.BOTTOM,
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    width: 30.w,
-                                                    height: 30.h,
-                                                    decoration: const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(
-                                                        product.userlike ?? false
-                                                            ? Icons.favorite
-                                                            : Icons.favorite_border,
-                                                        color: product.userlike ?? false
-                                                            ? Colors.red
-                                                            : Colors.grey,
-                                                        size: 18.sp,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 15.h),
-                                          Container(
-                                            height: 25.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(30.r),
-                                              color: Color.fromARGB(25, 137, 26, 255),
+                                  SizedBox(height: 16.h),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 20.w,
+                                      right: 20.w,
+                                    ),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 130.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(
+                                          20.r,
+                                        ),
+                                      ),
+                                      child: ListView.builder(
+                                        itemCount: categoryList.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 15.w,
+                                              right: 15.w,
                                             ),
-                                            child: Padding(
-                                              padding: EdgeInsets.only(left: 6.w, right: 6.w),
-                                              child: Row(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder:
+                                                        (
+                                                          context,
+                                                        ) => ClothingPage(
+                                                          categoryList[index]['title'],
+                                                          categoryList[index]['subTitle'],
+                                                        ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 15.sp,
-                                                    color: Color.fromARGB(255, 137, 26, 255),
+                                                  Container(
+                                                    width: 54.w,
+                                                    height: 54.h,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Color.fromARGB(
+                                                        255,
+                                                        246,
+                                                        245,
+                                                        250,
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: EdgeInsets.all(
+                                                        8.0,
+                                                      ),
+                                                      child: ClipOval(
+                                                        child:
+                                                            categoryList[index]['icon'],
+                                                      ),
+                                                    ),
                                                   ),
-
-                                                  if(  product.listingType=="Free")
-                                                  Text(
-                                                    listing.location ?? 'Unknown Location',
-                                                    style: GoogleFonts.dmSans(
-                                                      fontSize: 12.sp,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: Color.fromARGB(255, 137, 26, 255),
+                                                  SizedBox(height: 6.h),
+                                                  SizedBox(
+                                                    width: 85.w,
+                                                    child: Center(
+                                                      child: Text(
+                                                        maxLines: 2,
+                                                        categoryList[index]['title'] ==
+                                                                "Commercials"
+                                                            ? "Commercials\nVehicles"
+                                                            : categoryList[index]['title'],
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style:
+                                                            GoogleFonts.dmSans(
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Color.fromARGB(
+                                                                    255,
+                                                                    97,
+                                                                    91,
+                                                                    104,
+                                                                  ),
+                                                            ),
+                                                      ),
                                                     ),
                                                   ),
-
-                                                  if( product.listingType=="city")
-                                                    Text(
-                                                     "City" ?? 'Unknown Location',
-                                                      style: GoogleFonts.dmSans(
-                                                        fontSize: 12.sp,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color.fromARGB(255, 137, 26, 255),
-                                                      ),
-                                                    ),
-
-                                                  if( product.listingType=="state")
-                                                    Text(
-                                                      "State" ?? 'Unknown Location',
-                                                      style: GoogleFonts.dmSans(
-                                                        fontSize: 12.sp,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color.fromARGB(255, 137, 26, 255),
-                                                      ),
-                                                    ),
-
-
-                                                  if( product.listingType=="country")
-                                                    Text(
-                                                      "Country" ?? 'Unknown Location',
-                                                      style: GoogleFonts.dmSans(
-                                                        fontSize: 12.sp,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color.fromARGB(255, 137, 26, 255),
-                                                      ),
-                                                    ),
                                                 ],
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(height: 8.h),
-                                          Text(
-                                            title,
-                                            style: GoogleFonts.dmSans(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color.fromARGB(255, 97, 91, 104),
-                                              letterSpacing: -0.80,
-                                            ),
-                                          ),
-                                          Text(
-                                            "₹ ${product.price ?? 'N/A'}",
-                                            style: GoogleFonts.dmSans(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color.fromARGB(255, 137, 26, 255),
-                                            ),
-                                          ),
-                                        ],
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                              error: (error, stackTrace) => Center(child: Text(error.toString())),
-                              loading: () => Center(child: CircularProgressIndicator()),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "All Products",
-                                      style: GoogleFonts.dmSans(
-                                        fontSize: 26.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color.fromARGB(255, 36, 33, 38),
-                                        letterSpacing: -1,
+                                    ),
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  SizedBox(
+                                    height: 180.h,
+                                    child: CarouselSlider(
+                                      scrollPhysics:
+                                          NeverScrollableScrollPhysics(),
+                                      slideTransform: DefaultTransform(),
+                                      autoSliderTransitionTime: Duration(
+                                        seconds: 1,
+                                      ),
+                                      autoSliderDelay: Duration(seconds: 2),
+                                      enableAutoSlider: true,
+                                      unlimitedMode: true,
+                                      children: [
+                                        Image.asset('assets/frame.png'),
+                                        Image.asset('assets/frame1.png'),
+                                        Image.asset('assets/frame2.png'),
+                                        Image.asset("assets/frame3.png"),
+                                        Image.asset("assets/frame4.png"),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 20.h),
+
+                                  if (_isAdLoaded && _bannerAd != null)
+                                    Center(
+                                      // Yeh add kiya center karne ke liye
+                                      child: SizedBox(
+                                        width: _bannerAd!.size.width.toDouble(),
+                                        height:
+                                            _bannerAd!.size.height.toDouble(),
+                                        child: AdWidget(ad: _bannerAd!),
                                       ),
                                     ),
 
-
-                                    InkWell(
-                                      onTap: (){
-
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => ViewAllPage(
-false
+                                  SizedBox(height: 26.h),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 20.w,
+                                      right: 20.w,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Top Deal",
+                                          style: GoogleFonts.dmSans(
+                                            fontSize: 26.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                              255,
+                                              36,
+                                              33,
+                                              38,
                                             ),
                                           ),
+                                        ),
+
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (context) =>
+                                                        ViewAllPage(true),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 65.w,
+                                            height: 26.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    35.45.r,
+                                                  ),
+                                              color: Color.fromARGB(
+                                                255,
+                                                255,
+                                                255,
+                                                255,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "View all",
+                                                style: GoogleFonts.dmSans(
+                                                  fontSize: 11.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    97,
+                                                    91,
+                                                    104,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 300.h,
+                                    child: homepageData.when(
+                                      data: (listing) {
+                                        return ListView.builder(
+                                          key: ValueKey(
+                                            listing,
+                                          ), // Ensure ListView rebuilds on data change
+                                          padding: EdgeInsets.zero,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              listing.latestListings?.length ??
+                                              0,
+                                          itemBuilder: (context, index) {
+                                            final product =
+                                                listing.latestListings![index];
+                                            final productId =
+                                                product.id.toString();
+                                            Map<String, dynamic> jsonData = {};
+                                            try {
+                                              if (product.jsonData != null) {
+                                                jsonData =
+                                                    jsonDecode(
+                                                          product.jsonData!,
+                                                        )
+                                                        as Map<String, dynamic>;
+                                              }
+                                            } catch (e) {
+                                              print(
+                                                "Error parsing jsonData: $e",
+                                              );
+                                            }
+                                            final title =
+                                                jsonData['title']?.toString() ??
+                                                'No Title Available';
+
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 21.h,
+                                                left: 20.w,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            CupertinoPageRoute(
+                                                              builder:
+                                                                  (
+                                                                    context,
+                                                                  ) => ParticularDealsPage(
+                                                                    id: productId,
+                                                                  ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                15.r,
+                                                              ),
+                                                          child: Image.network(
+                                                            product.image ??
+                                                                "https://www.irisoele.com/img/noimage.png",
+                                                            width: 240.w,
+                                                            height: 160.h,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Positioned(
+                                                        right: 15.w,
+                                                        top: 15.h,
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            bool isLikes =
+                                                                product
+                                                                    .userlike ??
+                                                                false;
+                                                            final body =
+                                                                LikeBodyModel(
+                                                                  productId:
+                                                                      productId,
+                                                                  type: "like",
+                                                                  userId:
+                                                                      "${box.get("id")}",
+                                                                );
+                                                            await ref
+                                                                .read(
+                                                                  likeNotiferProvider
+                                                                      .notifier,
+                                                                )
+                                                                .likeProduct(
+                                                                  body,
+                                                                );
+                                                            ref.invalidate(
+                                                              homepageController,
+                                                            );
+                                                            ref.invalidate(
+                                                              allCategoryController,
+                                                            );
+                                                            await Future.delayed(
+                                                              Duration.zero,
+                                                            );
+                                                            Fluttertoast.showToast(
+                                                              msg:
+                                                                  isLikes
+                                                                      ? "Removed from Liked"
+                                                                      : "Added to Liked",
+                                                              toastLength:
+                                                                  Toast
+                                                                      .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            width: 30.w,
+                                                            height: 30.h,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                                  shape:
+                                                                      BoxShape
+                                                                          .circle,
+                                                                  color:
+                                                                      Colors
+                                                                          .white,
+                                                                ),
+                                                            child: Center(
+                                                              child: Icon(
+                                                                product.userlike ??
+                                                                        false
+                                                                    ? Icons
+                                                                        .favorite
+                                                                    : Icons
+                                                                        .favorite_border,
+                                                                color:
+                                                                    product.userlike ??
+                                                                            false
+                                                                        ? Colors
+                                                                            .red
+                                                                        : Colors
+                                                                            .grey,
+                                                                size: 18.sp,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 15.h),
+                                                  Container(
+                                                    height: 25.h,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            30.r,
+                                                          ),
+                                                      color: Color.fromARGB(
+                                                        25,
+                                                        137,
+                                                        26,
+                                                        255,
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                        left: 6.w,
+                                                        right: 6.w,
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.location_on,
+                                                            size: 15.sp,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                  255,
+                                                                  137,
+                                                                  26,
+                                                                  255,
+                                                                ),
+                                                          ),
+
+                                                          if (product
+                                                                  .listingType ==
+                                                              "Free")
+                                                            Text(
+                                                              listing.location ??
+                                                                  'Unknown Location',
+                                                              style: GoogleFonts.dmSans(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    Color.fromARGB(
+                                                                      255,
+                                                                      137,
+                                                                      26,
+                                                                      255,
+                                                                    ),
+                                                              ),
+                                                            ),
+
+                                                          if (product
+                                                                  .listingType ==
+                                                              "city")
+                                                            Text(
+                                                              "City" ??
+                                                                  'Unknown Location',
+                                                              style: GoogleFonts.dmSans(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    Color.fromARGB(
+                                                                      255,
+                                                                      137,
+                                                                      26,
+                                                                      255,
+                                                                    ),
+                                                              ),
+                                                            ),
+
+                                                          if (product
+                                                                  .listingType ==
+                                                              "state")
+                                                            Text(
+                                                              "State" ??
+                                                                  'Unknown Location',
+                                                              style: GoogleFonts.dmSans(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    Color.fromARGB(
+                                                                      255,
+                                                                      137,
+                                                                      26,
+                                                                      255,
+                                                                    ),
+                                                              ),
+                                                            ),
+
+                                                          if (product
+                                                                  .listingType ==
+                                                              "country")
+                                                            Text(
+                                                              "Country" ??
+                                                                  'Unknown Location',
+                                                              style: GoogleFonts.dmSans(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    Color.fromARGB(
+                                                                      255,
+                                                                      137,
+                                                                      26,
+                                                                      255,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 8.h),
+                                                  Text(
+                                                    title,
+                                                    style: GoogleFonts.dmSans(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color.fromARGB(
+                                                        255,
+                                                        97,
+                                                        91,
+                                                        104,
+                                                      ),
+                                                      letterSpacing: -0.80,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "₹ ${product.price ?? 'N/A'}",
+                                                    style: GoogleFonts.dmSans(
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Color.fromARGB(
+                                                        255,
+                                                        137,
+                                                        26,
+                                                        255,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         );
-
                                       },
-                                      child: Container(
-                                        width: 65.w,
-                                        height: 26.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(35.45.r),
-                                          color: Color.fromARGB(255, 255, 255, 255),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "View all",
-                                            style: GoogleFonts.dmSans(
-                                              fontSize: 11.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color.fromARGB(255, 97, 91, 104),
-                                            ),
+                                      error:
+                                          (error, stackTrace) => Center(
+                                            child: Text(error.toString()),
                                           ),
+                                      loading:
+                                          () => Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 20.w,
+                                          right: 20.w,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "All Products",
+                                              style: GoogleFonts.dmSans(
+                                                fontSize: 26.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color.fromARGB(
+                                                  255,
+                                                  36,
+                                                  33,
+                                                  38,
+                                                ),
+                                                letterSpacing: -1,
+                                              ),
+                                            ),
+
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder:
+                                                        (context) =>
+                                                            ViewAllPage(true),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 65.w,
+                                                height: 26.h,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        35.45.r,
+                                                      ),
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    255,
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "View all",
+                                                    style: GoogleFonts.dmSans(
+                                                      fontSize: 11.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color.fromARGB(
+                                                        255,
+                                                        97,
+                                                        91,
+                                                        104,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-
-
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  AllProductBody(
+                                    searchQuery: _searchQuery,
+                                    key: ValueKey(_searchQuery),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          AllProductBody(searchQuery: _searchQuery, key: ValueKey(_searchQuery)),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-
-
-                  ],
-                ),
-              ],
-            ),
-          ),
-        )
-
-            : tabBottom == 1
-            ? ChatPage()
-
-            : tabBottom == 2
-            ? ListingPage()
-
-            : ProfilePage(),
-
-
-
+                  ),
+                )
+                : tabBottom == 1
+                ? ChatPage()
+                : tabBottom == 2
+                ? ListingPage()
+                : ProfilePage(),
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -802,7 +1072,8 @@ false
           backgroundColor: Color.fromARGB(255, 137, 26, 255),
           child: Icon(Icons.add, color: Colors.white),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
         bottomNavigationBar: BottomAppBar(
           height: 80.h,
           padding: EdgeInsets.zero,
@@ -844,15 +1115,9 @@ false
             ),
           ),
         ),
-
-
-
       ),
     );
   }
-
-
-
 
   Widget _buildTab({
     required IconData icon,
@@ -871,13 +1136,19 @@ false
         children: [
           Icon(
             icon,
-            color: isSelected ? const Color.fromARGB(255, 137, 26, 255) : const Color.fromARGB(255, 97, 91, 104),
+            color:
+                isSelected
+                    ? const Color.fromARGB(255, 137, 26, 255)
+                    : const Color.fromARGB(255, 97, 91, 104),
             size: 26.sp,
           ),
           Text(
             label,
             style: GoogleFonts.dmSans(
-              color: isSelected ? const Color.fromARGB(255, 137, 26, 255) : const Color.fromARGB(255, 97, 91, 104),
+              color:
+                  isSelected
+                      ? const Color.fromARGB(255, 137, 26, 255)
+                      : const Color.fromARGB(255, 97, 91, 104),
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -886,10 +1157,6 @@ false
       ),
     );
   }
-
-
-
-
 }
 
 class AllProductBody extends ConsumerStatefulWidget {
@@ -899,7 +1166,6 @@ class AllProductBody extends ConsumerStatefulWidget {
   @override
   ConsumerState<AllProductBody> createState() => _AllProductBodyState();
 }
-
 
 class _AllProductBodyState extends ConsumerState<AllProductBody> {
   List<Map<String, String>> Allproductlist = [
@@ -990,206 +1256,240 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
 
         return Padding(
           padding: EdgeInsets.only(left: 20.w, right: 20.w),
-          child: allproduct.allProducts!.isEmpty
-              ? Center(
-            child: Text(
-              "No products found",
-              style: GoogleFonts.dmSans(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                color: Color.fromARGB(255, 97, 91, 104),
-              ),
-            ),
-          )
-              : GridView.builder(
-            key: ValueKey(allproduct), // Ensure GridView rebuilds on data change
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            itemCount: allproduct.allProducts!.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 20.w,
-              mainAxisSpacing: 14.h,
-              childAspectRatio: 0.65,
-            ),
-            itemBuilder: (context, index) {
-              final data = allproduct.allProducts![index];
-              final productId = data.id.toString();
-              Map<String, dynamic> jsonData = {};
-              try {
-                if (data.jsonData != null) {
-                  jsonData = jsonDecode(data.jsonData!) as Map<String, dynamic>;
-                }
-              } catch (e) {
-                print("Error parsing jsonData: $e");
-              }
-              final title = jsonData['title']?.toString() ?? 'No Title Available';
-              final listingType = data.listingType ?? 'No listingType Available';
-              final city = data.city ?? 'No listingType Available';
-              final state = data.state ?? 'No listingType Available';
-              final conuntry = data.country ?? 'No listingType Available';
-
-              return
-
-                Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => ParticularDealsPage(id: productId),
-                            ),
-                          );
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.r),
-                          child: Image.network(
-                            data.image ?? "https://www.irisoele.com/img/noimage.png",
-                            width: 196.w,
-                            height: 150.h,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+          child:
+              allproduct.allProducts!.isEmpty
+                  ? Center(
+                    child: Text(
+                      "No products found",
+                      style: GoogleFonts.dmSans(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color.fromARGB(255, 97, 91, 104),
                       ),
-                      Positioned(
-                        right: 15.w,
-                        top: 15.h,
-                        child: GestureDetector(
-                          onTap: () async {
-                            bool isLikes = data.userlike ?? false;
-                            final body = LikeBodyModel(
-                              productId: productId,
-                              type: "like",
-                              userId: "${box.get("id")}",
-                            );
-                            await ref.read(likeNotiferProvider.notifier).likeProduct(body);
-                            ref.invalidate(homepageController);
-                            ref.invalidate(allCategoryController);
-                            await Future.delayed(Duration.zero);
-                            Fluttertoast.showToast(
-                              msg: isLikes ? "Removed from Liked" : "Added to Liked",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                            );
-                          },
-                          child: Container(
-                            width: 30.w,
-                            height: 30.h,
+                    ),
+                  )
+                  : GridView.builder(
+                    key: ValueKey(
+                      allproduct,
+                    ), // Ensure GridView rebuilds on data change
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: allproduct.allProducts!.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20.w,
+                      mainAxisSpacing: 14.h,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemBuilder: (context, index) {
+                      final data = allproduct.allProducts![index];
+                      final productId = data.id.toString();
+                      Map<String, dynamic> jsonData = {};
+                      try {
+                        if (data.jsonData != null) {
+                          jsonData =
+                              jsonDecode(data.jsonData!)
+                                  as Map<String, dynamic>;
+                        }
+                      } catch (e) {
+                        print("Error parsing jsonData: $e");
+                      }
+                      final title =
+                          jsonData['title']?.toString() ?? 'No Title Available';
+                      final listingType =
+                          data.listingType ?? 'No listingType Available';
+                      final city = data.city ?? 'No listingType Available';
+                      final state = data.state ?? 'No listingType Available';
+                      final conuntry =
+                          data.country ?? 'No listingType Available';
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder:
+                                          (context) => ParticularDealsPage(
+                                            id: productId,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  child: Image.network(
+                                    data.image ??
+                                        "https://www.irisoele.com/img/noimage.png",
+                                    width: 196.w,
+                                    height: 150.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 15.w,
+                                top: 15.h,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    bool isLikes = data.userlike ?? false;
+                                    final body = LikeBodyModel(
+                                      productId: productId,
+                                      type: "like",
+                                      userId: "${box.get("id")}",
+                                    );
+                                    await ref
+                                        .read(likeNotiferProvider.notifier)
+                                        .likeProduct(body);
+                                    ref.invalidate(homepageController);
+                                    ref.invalidate(allCategoryController);
+                                    await Future.delayed(Duration.zero);
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          isLikes
+                                              ? "Removed from Liked"
+                                              : "Added to Liked",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 30.w,
+                                    height: 30.h,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        data.userlike ?? false
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color:
+                                            data.userlike ?? false
+                                                ? Colors.red
+                                                : Colors.grey,
+                                        size: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 15.h),
+
+                          Container(
+                            width: double.infinity,
+                            height: 25.h,
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(30.r),
+                              color: Color.fromARGB(25, 137, 26, 255),
                             ),
-                            child: Center(
-                              child: Icon(
-                                data.userlike ?? false ? Icons.favorite : Icons.favorite_border,
-                                color: data.userlike ?? false ? Colors.red : Colors.grey,
-                                size: 18.sp,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 6.w, right: 6.w),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    size: 15.sp,
+                                    color: Color.fromARGB(255, 137, 26, 255),
+                                  ),
+
+                                  SizedBox(width: 5.w),
+                                  if (listingType == "Free")
+                                    Text(
+                                      allproduct.location ?? 'Unknown Location',
+                                      style: GoogleFonts.dmSans(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
+                                        ),
+                                      ),
+                                    ),
+
+                                  if (listingType == "city")
+                                    Text(
+                                      city ?? 'Unknown Location',
+                                      style: GoogleFonts.dmSans(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
+                                        ),
+                                      ),
+                                    ),
+
+                                  if (listingType == "state")
+                                    Text(
+                                      state ?? 'Unknown Location',
+                                      style: GoogleFonts.dmSans(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
+                                        ),
+                                      ),
+                                    ),
+
+                                  if (listingType == "country")
+                                    Text(
+                                      conuntry ?? 'Unknown Location',
+                                      style: GoogleFonts.dmSans(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  SizedBox(height: 15.h),
+                          SizedBox(height: 8.h),
 
-                  Container(
-                    width:double.infinity,
-                    height: 25.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.r),
-                      color: Color.fromARGB(25, 137, 26, 255),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 6.w, right: 6.w),
-                      child: Row(
-                        children: [
-
-  Icon(
-                            Icons.location_on,
-                            size: 15.sp,
-                            color: Color.fromARGB(255, 137, 26, 255),
+                          Text(
+                            title,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 97, 91, 104),
+                            ),
                           ),
 
-                          SizedBox(width: 5.w,),
-                          if(listingType=="Free")
                           Text(
-                            allproduct.location ?? 'Unknown Location',
+                            "₹ ${data.price ?? 'N/A'}",
                             style: GoogleFonts.dmSans(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
                               color: Color.fromARGB(255, 137, 26, 255),
                             ),
                           ),
-
-                          if( listingType=="city")
-                            Text(
-                             city ?? 'Unknown Location',
-                              style: GoogleFonts.dmSans(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 137, 26, 255),
-                              ),
-                            ),
-
-                          if(listingType=="state")
-                            Text(
-                              state ?? 'Unknown Location',
-                              style: GoogleFonts.dmSans(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 137, 26, 255),
-                              ),
-                            ),
-
-
-                          if(listingType=="country")
-                            Text(
-                              conuntry ?? 'Unknown Location',
-                              style: GoogleFonts.dmSans(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 137, 26, 255),
-                              ),
-                            ),
                         ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
-
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    title,
-                    style: GoogleFonts.dmSans(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 97, 91, 104),
-                    ),
-                  ),
-
-                  Text(
-                    "₹ ${data.price ?? 'N/A'}",
-                    style: GoogleFonts.dmSans(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Color.fromARGB(255, 137, 26, 255),
-                    ),
-                  ),
-
-                ],
-              );
-
-            },
-
-          ),
         );
       },
       error: (error, stackTrace) => Center(child: Text(error.toString())),
@@ -1197,6 +1497,3 @@ class _AllProductBodyState extends ConsumerState<AllProductBody> {
     );
   }
 }
-
-
-

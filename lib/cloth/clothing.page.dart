@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +11,10 @@ import 'package:shopping_app_olx/particularDeals/particularDeals.page.dart';
 import '../like/model/likeBodyModel.dart';
 import '../like/service/likeController.dart';
 
-
 class ClothingPage extends ConsumerStatefulWidget {
   final String query;
   final String subTitle;
-  const ClothingPage(
-      this.query,
-      this.subTitle,
-      {super.key});
+  const ClothingPage(this.query, this.subTitle, {super.key});
   @override
   ConsumerState<ClothingPage> createState() => _ClothingPageState();
 }
@@ -31,11 +26,14 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
     searchController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("data");
     var userId = box.get("id");
-    final dataProvider = ref.watch(categoryController((category: widget.query, userId: userId)));
+    final dataProvider = ref.watch(
+      categoryController((category: widget.query, userId: userId)),
+    );
     final searchQuery = ref.watch(searchProvider).toLowerCase();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 245, 242, 247),
@@ -44,9 +42,7 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 54.h),
-
-
+            SizedBox(height: 40.h),
             Row(
               children: [
                 SizedBox(width: 20.w),
@@ -96,27 +92,27 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
               padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-
-                ],
+                children: [],
               ),
             ),
-
 
             SizedBox(height: 20.h),
 
             dataProvider.when(
               data: (data) {
-                final filteredData = searchQuery.isEmpty
-                    ? data.data
-                    : data.data.where((item) {
-                  final title = item.jsonData.entries.isNotEmpty
-                      ? item.jsonData.entries.first.value.toLowerCase()
-                      : "";
-                  final category = item.category.toLowerCase();
-                  return title.contains(searchQuery) ||
-                      category.contains(searchQuery);
-                }).toList();
+                final filteredData =
+                    searchQuery.isEmpty
+                        ? data.data
+                        : data.data.where((item) {
+                          final title =
+                              item.jsonData.entries.isNotEmpty
+                                  ? item.jsonData.entries.first.value
+                                      .toLowerCase()
+                                  : "";
+                          final category = item.category.toLowerCase();
+                          return title.contains(searchQuery) ||
+                              category.contains(searchQuery);
+                        }).toList();
                 log("Filtered items: ${filteredData.length}");
                 if (filteredData.isEmpty) {
                   return const Expanded(
@@ -138,15 +134,14 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                       ),
                       itemBuilder: (context, index) {
                         final item = filteredData[index];
-                        final title = item.jsonData.entries.isNotEmpty
-                            ? item.jsonData.entries.first.value
-                            : "Unknown Item";
+                        final title =
+                            item.jsonData.entries.isNotEmpty
+                                ? item.jsonData.entries.first.value
+                                : "Unknown Item";
 
                         final listing_type = item.listing_type;
 
-
-                        return
-                          Column(
+                        return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Stack(
@@ -156,9 +151,10 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) => ParticularDealsPage(
-                                          id: item.id.toString(),
-                                        ),
+                                        builder:
+                                            (context) => ParticularDealsPage(
+                                              id: item.id.toString(),
+                                            ),
                                       ),
                                     );
                                   },
@@ -169,13 +165,16 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                                       width: 196.w,
                                       height: 150.h,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          Container(
-                                            width: 196.w,
-                                            height: 150.h,
-                                            color: Colors.grey[300],
-                                            child: const Icon(Icons.broken_image),
-                                          ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Container(
+                                                width: 196.w,
+                                                height: 150.h,
+                                                color: Colors.grey[300],
+                                                child: const Icon(
+                                                  Icons.broken_image,
+                                                ),
+                                              ),
                                     ),
                                   ),
                                 ),
@@ -183,118 +182,115 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                                   right: 15.w,
                                   top: 15.h,
                                   child:
-
-
-//                                   GestureDetector(
-//                                     onTap:()async{
-// /*
-//                                       final body = LikeBodyModel(
-//                                         productId: item.id.toString(),
-//                                         type: "like",
-//                                         userId: "${box.get('id')}",
-//                                       );
-//
-//                                       await ref
-//                                           .read(likeNotiferProvider.notifier)
-//                                           .likeProduct(body);
-//
-//                                       final toggleNotifier = ref.read(
-//                                         likeToggleProvider.notifier,
-//                                       );
-//
-//                                       toggleNotifier.toggle(item.id.toString());
-//
-//                                       final nowLiked = toggleNotifier.isLiked(item.id.toString());
-//
-//                                       Fluttertoast.showToast(
-//                                         msg:
-//                                         nowLiked
-//                                             ? "Added to Liked"
-//                                             : "Removed from Liked",
-//                                         toastLength: Toast.LENGTH_SHORT,
-//                                         gravity: ToastGravity.BOTTOM,
-//                                       );*/
-//                                     },
-//                                     child: Container(
-//                                       width: 30.w,
-//                                       height: 30.h,
-//                                       decoration: const BoxDecoration(
-//                                         shape: BoxShape.circle,
-//                                         color: Colors.white,
-//                                       ),
-//                                       child: Center(
-//                                         child:  Icon(
-//                                           // isLiked
-//                                           //     ? Icons.favorite
-//                                           //     :
-//                                         Icons.favorite_border,
-//                                           color:
-//                                           // isLiked
-//                                         // ?
-//                                           Colors.red ,
-//                                           // : Colors.grey,
-//                                           size: 18.sp,
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-
-
+                                  //                                   GestureDetector(
+                                  //                                     onTap:()async{
+                                  // /*
+                                  //                                       final body = LikeBodyModel(
+                                  //                                         productId: item.id.toString(),
+                                  //                                         type: "like",
+                                  //                                         userId: "${box.get('id')}",
+                                  //                                       );
+                                  //
+                                  //                                       await ref
+                                  //                                           .read(likeNotiferProvider.notifier)
+                                  //                                           .likeProduct(body);
+                                  //
+                                  //                                       final toggleNotifier = ref.read(
+                                  //                                         likeToggleProvider.notifier,
+                                  //                                       );
+                                  //
+                                  //                                       toggleNotifier.toggle(item.id.toString());
+                                  //
+                                  //                                       final nowLiked = toggleNotifier.isLiked(item.id.toString());
+                                  //
+                                  //                                       Fluttertoast.showToast(
+                                  //                                         msg:
+                                  //                                         nowLiked
+                                  //                                             ? "Added to Liked"
+                                  //                                             : "Removed from Liked",
+                                  //                                         toastLength: Toast.LENGTH_SHORT,
+                                  //                                         gravity: ToastGravity.BOTTOM,
+                                  //                                       );*/
+                                  //                                     },
+                                  //                                     child: Container(
+                                  //                                       width: 30.w,
+                                  //                                       height: 30.h,
+                                  //                                       decoration: const BoxDecoration(
+                                  //                                         shape: BoxShape.circle,
+                                  //                                         color: Colors.white,
+                                  //                                       ),
+                                  //                                       child: Center(
+                                  //                                         child:  Icon(
+                                  //                                           // isLiked
+                                  //                                           //     ? Icons.favorite
+                                  //                                           //     :
+                                  //                                         Icons.favorite_border,
+                                  //                                           color:
+                                  //                                           // isLiked
+                                  //                                         // ?
+                                  //                                           Colors.red ,
+                                  //                                           // : Colors.grey,
+                                  //                                           size: 18.sp,
+                                  //                                         ),
+                                  //                                       ),
+                                  //                                     ),
+                                  //                                   ),
                                   GestureDetector(
                                     onTap: () async {
-
-                                      bool isLikes  = item.userlike??false;
-                                          // particular.user_like??false;
+                                      bool isLikes = item.userlike ?? false;
+                                      // particular.user_like??false;
                                       final body = LikeBodyModel(
                                         productId: item.id.toString(),
                                         type: "like",
                                         userId: "${box.get("id")}",
                                       );
                                       // Perform the like action
-                                      await ref.read(likeNotiferProvider.notifier).likeProduct(body);
+                                      await ref
+                                          .read(likeNotiferProvider.notifier)
+                                          .likeProduct(body);
                                       // Invalidate the lists
                                       ref.invalidate(categoryController);
                                       // ref.invalidate(allCategoryController);
                                       // Show toast after invalidation
-                                      await Future.delayed(Duration.zero); // Ensure UI updates before toast
+                                      await Future.delayed(
+                                        Duration.zero,
+                                      ); // Ensure UI updates before toast
                                       Fluttertoast.showToast(
-                                        msg: isLikes
-                                            ?"Removed from Liked"
-                                            : "Added to Liked",
+                                        msg:
+                                            isLikes
+                                                ? "Removed from Liked"
+                                                : "Added to Liked",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.BOTTOM,
                                       );
                                     },
                                     child: Container(
-                                        width: 46.w,
-                                        height: 46.h,
-                                        decoration: const BoxDecoration(
-                                          color: Color.fromARGB(25, 137, 26, 255),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child:
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-
-
+                                      width: 46.w,
+                                      height: 46.h,
+                                      decoration: const BoxDecoration(
+                                        color: Color.fromARGB(25, 137, 26, 255),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
                                           Icon(
                                             item.userlike!
                                                 ? Icons.favorite
                                                 : Icons.favorite_border,
-                                            color:  item.userlike!
-                                                ? Colors.red
-                                                : Colors.grey,
+                                            color:
+                                                item.userlike!
+                                                    ? Colors.red
+                                                    : Colors.grey,
                                             size: 18.sp,
                                           ),
-                                            // Icon(Icons.favorite_border)
 
-
-                                          ],)
-
+                                          // Icon(Icons.favorite_border)
+                                        ],
+                                      ),
                                     ),
                                   ),
-
                                 ),
                               ],
                             ),
@@ -313,7 +309,12 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                                     Icon(
                                       Icons.category,
                                       size: 15.sp,
-                                      color: const Color.fromARGB(255, 137, 26, 255),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        137,
+                                        26,
+                                        255,
+                                      ),
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
@@ -322,7 +323,12 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                                       style: GoogleFonts.dmSans(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w500,
-                                        color: const Color.fromARGB(255, 137, 26, 255),
+                                        color: const Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -334,97 +340,96 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                               width: 120.w,
                               height: 25.h,
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(
-                                  30.r,
-                                ),
-                                color: Color.fromARGB(
-                                  25,
-                                  137,
-                                  26,
-                                  255,
-                                ),
+                                borderRadius: BorderRadius.circular(30.r),
+                                color: Color.fromARGB(25, 137, 26, 255),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.w,
-                                  right: 6.w,
-                                ),
+                                padding: EdgeInsets.only(left: 6.w, right: 6.w),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.location_on,
                                       size: 15.sp,
-                                      color: Color.fromARGB(
-                                        255,
-                                        137,
-                                        26,
-                                        255,
-                                      ),
+                                      color: Color.fromARGB(255, 137, 26, 255),
                                     ),
 
-                                   //  Text(
-                                   //    // "Udaipur, rajasthan",
-                                   //    // dealsList[index]["location"]
-                                   //    //     .toString(),
-                                   // "Nearby (2KM)",
-                                   //    style:
-                                   //    GoogleFonts.dmSans(
-                                   //      fontSize: 12.sp,
-                                   //      fontWeight:
-                                   //      FontWeight
-                                   //          .w500,
-                                   //      color:
-                                   //      Color.fromARGB(
-                                   //        255,
-                                   //        137,
-                                   //        26,
-                                   //        255,
-                                   //      ),
-                                   //    ),
-                                   //  ),
-
-
-
-                                    if(listing_type=="Free")
-
+                                    //  Text(
+                                    //    // "Udaipur, rajasthan",
+                                    //    // dealsList[index]["location"]
+                                    //    //     .toString(),
+                                    // "Nearby (2KM)",
+                                    //    style:
+                                    //    GoogleFonts.dmSans(
+                                    //      fontSize: 12.sp,
+                                    //      fontWeight:
+                                    //      FontWeight
+                                    //          .w500,
+                                    //      color:
+                                    //      Color.fromARGB(
+                                    //        255,
+                                    //        137,
+                                    //        26,
+                                    //        255,
+                                    //      ),
+                                    //    ),
+                                    //  ),
+                                    if (listing_type == "Free")
                                       Text(
                                         "Free" ?? 'Unknown Location',
                                         style: GoogleFonts.dmSans(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: Color.fromARGB(255, 137, 26, 255),
+                                          color: Color.fromARGB(
+                                            255,
+                                            137,
+                                            26,
+                                            255,
+                                          ),
                                         ),
                                       ),
 
-                                    if( listing_type=="city")
+                                    if (listing_type == "city")
                                       Text(
                                         "City" ?? 'Unknown Location',
                                         style: GoogleFonts.dmSans(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: Color.fromARGB(255, 137, 26, 255),
+                                          color: Color.fromARGB(
+                                            255,
+                                            137,
+                                            26,
+                                            255,
+                                          ),
                                         ),
                                       ),
 
-                                    if(listing_type=="state")
+                                    if (listing_type == "state")
                                       Text(
                                         "State" ?? 'Unknown Location',
                                         style: GoogleFonts.dmSans(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: Color.fromARGB(255, 137, 26, 255),
+                                          color: Color.fromARGB(
+                                            255,
+                                            137,
+                                            26,
+                                            255,
+                                          ),
                                         ),
                                       ),
 
-
-                                    if(listing_type=="country")
+                                    if (listing_type == "country")
                                       Text(
                                         "Country" ?? 'Unknown Location',
                                         style: GoogleFonts.dmSans(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: Color.fromARGB(255, 137, 26, 255),
+                                          color: Color.fromARGB(
+                                            255,
+                                            137,
+                                            26,
+                                            255,
+                                          ),
                                         ),
                                       ),
                                   ],
@@ -444,7 +449,9 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              item.price != null ? "₹${item.price}" : "Price not available",
+                              item.price != null
+                                  ? "₹${item.price}"
+                                  : "Price not available",
                               style: GoogleFonts.dmSans(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w600,
@@ -469,18 +476,15 @@ class _ClothingPageState extends ConsumerState<ClothingPage> {
                   ),
                 );
               },
-              loading: () => const Expanded(
-                child: Center(child: CircularProgressIndicator()),
-              ),
+              loading:
+                  () => const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
             ),
-
-
           ],
         ),
       ),
-
     );
-
   }
 }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shopping_app_olx/chat/chating.page.dart';
+import 'package:shopping_app_olx/config/pretty.dio.dart';
 import 'package:shopping_app_olx/particularDeals/service/particularProductController.dart';
 import 'package:shopping_app_olx/particularDeals/service/viewProvider.dart';
+import 'package:shopping_app_olx/report/reportAdBodyModel.dart';
+import 'package:shopping_app_olx/report/reportAdService.dart';
 import '../like/model/likeBodyModel.dart';
 import '../like/service/likeController.dart';
 
@@ -22,18 +26,17 @@ class ParticularDealsPage extends ConsumerStatefulWidget {
 }
 
 class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
-  static const String baseImageUrl1 = 'https://classify.mymarketplace.co.in/public';
+  static const String baseImageUrl1 =
+      'https://classify.mymarketplace.co.in/public';
   static const String baseImageUrl = '';
   static const String fallbackImageUrl =
       'https://www.irisoele.com/img/noimage.png';
-
 
   @override
   void initState() {
     super.initState();
     fetchProductData();
   }
-
 
   Future<void> fetchProductData() async {
     final box = Hive.box("data");
@@ -73,6 +76,94 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
     const itemHeight = 200.0; // Fixed height for carousel images
     const margin = 10.0;
     return itemHeight + 2 * margin; // Add margin for top and bottom
+  }
+
+  void _showReportDialog(String userId, int productId) {
+    final TextEditingController reportController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          title: Text(
+            "Report Issue",
+            style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          content: TextField(
+            controller: reportController,
+            maxLines: 3,
+            decoration: InputDecoration(
+              hintText: "Describe your issue here...",
+              hintStyle: GoogleFonts.inter(fontSize: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Cancel",
+                style: GoogleFonts.inter(
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF086E86),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () async {
+                final reason = reportController.text.trim();
+                if (reason.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Please enter your report reason"),
+                    ),
+                  );
+                  return;
+                }
+                try {
+                  final body = ReportAdBodyModel(
+                    userId: userId,
+                    productId: productId.toString(),
+                    reason: reason,
+                  );
+                  final service = ReportAdService(createDio());
+                  final response = await service.reportIsue(body);
+                  if (response.success == true) {
+                    Fluttertoast.showToast(msg: response.message);
+                    log("Report Reason: $reason");
+                    Navigator.pop(context);
+                  } else {
+                    Fluttertoast.showToast(msg: response.message);
+                  }
+                } catch (e, st) {
+                  log("${e.toString()}/n ${st.toString()}");
+                  Fluttertoast.showToast(msg: "Api Error : $e");
+                }
+              },
+              child: Text(
+                "OK",
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -377,7 +468,8 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 255.h,
+                    //height: 255.h,
+                    // padding: EdgeInsets.only(bottom: 15.h),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20.r),
@@ -415,7 +507,6 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                               ),
                               SizedBox(width: 10.w),
 
-
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -449,8 +540,6 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                                   ),
                                 ],
                               ),
-
-
                             ],
                           ),
                         ),
@@ -634,11 +723,40 @@ class _ParticularDealsPageState extends ConsumerState<ParticularDealsPage> {
                             ),
                           ),
                         ),
+                        InkWell(
+                          onTap: () {
+                            _showReportDialog(
+                              box.get("id"),
+                              particular.data!.product!.id ?? 0,
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 20.w,
+                              vertical: 20.h,
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 49.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35.45.r),
+                              border: Border.all(color: Colors.red),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Report",
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 13.h),
                 SizedBox(height: 40.h),
               ],
             ),
