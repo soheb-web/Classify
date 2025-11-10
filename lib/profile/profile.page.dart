@@ -580,7 +580,6 @@ class EditProfileBody extends StatelessWidget {
 }
 */
 
-
 //
 //
 // import 'package:dio/dio.dart';
@@ -1210,7 +1209,6 @@ class EditProfileBody extends StatelessWidget {
 //   }
 // }
 
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -1237,9 +1235,7 @@ class ProfilePage extends ConsumerStatefulWidget {
   ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-
   @override
   void initState() {
     super.initState();
@@ -1268,22 +1264,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     await Future.delayed(Duration(seconds: 1));
   }
 
-
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("data");
     var token = box.get("token");
-    final profileData = ref.watch(
-      profileController(box.get("id").toString()),
-    );
+    final profileData = ref.watch(profileController(box.get("id").toString()));
 
     final activePlan = ref.watch(activePlanProvider);
-    return
-
-      Scaffold(
-      body:
-
-      Container(
+    return Scaffold(
+      body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -1297,310 +1286,353 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
+                Stack(
+                  children: [
+                    Image.asset("assets/bgimage.png"),
 
-                Stack(children: [
-
-                  Image.asset("assets/bgimage.png"),
-
-
-                  profileData.when(
-                    data: (data) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 20.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 126.w,
-                              height: 126.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: ClipOval(
-                                  child: data.data.profile_approved == "Pending" ||
-                                      data.data.image == null
-                                      ? Icon(Icons.person, size: 60.sp)
-                                      : Image.network(
-                                    data.data.image,
-                                    width: 126.w,
-                                    height: 126.h,
-                                    fit: BoxFit.cover,
+                    profileData.when(
+                      data: (data) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 20.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 126.w,
+                                height: 126.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Center(
+                                  child: ClipOval(
+                                    child:
+                                        data.data.profile_approved ==
+                                                    "Pending" ||
+                                                data.data.image == null
+                                            ? Icon(Icons.person, size: 60.sp)
+                                            : Image.network(
+                                              data.data.image,
+                                              width: 126.w,
+                                              height: 126.h,
+                                              fit: BoxFit.cover,
+                                            ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 20.h),
-                            Text(
-                              data.data.fullName,
-                              style: GoogleFonts.dmSans(
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color.fromARGB(255, 33, 36, 38),
-                              ),
-                            ),
-                            Text(
-                              "+91 ${data.data.phoneNumber}",
-                              style: GoogleFonts.dmSans(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 97, 91, 104),
-                              ),
-                            ),
-                            SizedBox(height: 25.h),
-                            Container(
-                              width: 120.w,
-                              height: 36.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40.r),
-                                color: Color.fromARGB(25, 137, 26, 255),
-                              ),
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final result = await Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => EditProfile(),
-                                    ),
-                                  );
-                                  if (result == true) {
-                                    var box = Hive.box("data");
-                                    ref.invalidate(
-                                      profileController("${box.get("id").toString()}"),
-                                    );
-                                  }
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      color: Color.fromARGB(255, 137, 26, 255),
-                                      size: 20.sp,
-                                    ),
-                                    SizedBox(width: 6.w),
-                                    Text(
-                                      "Edit Profile",
-                                      style: GoogleFonts.dmSans(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(255, 137, 26, 255),
-                                      ),
-                                    ),
-                                  ],
+                              SizedBox(height: 20.h),
+                              Text(
+                                data.data.fullName,
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color.fromARGB(255, 33, 36, 38),
                                 ),
                               ),
-                            ),
-                            activePlan.when(
-                              data: (snap) {
-                                final box = Hive.box("data");
-                                if (snap != null) {
-                                  box.put("plan_id", snap!.activePlan.planId);
-                                  box.put('maxpost', snap.activePlan.plan);
-                                }
-                                return snap == null
-                                    ? SizedBox()
-                                    : buildActivePlanCard(snap);
-                              },
-                              error: (err, stack) => Center(child: SizedBox()),
-                              loading: () => Center(child: CircularProgressIndicator()),
-                            ),
-                            SizedBox(height: 40.h),
-                            Padding(
-                              padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(
-                                  left: 20.w,
-                                  right: 20.w,
-                                  bottom: 30.h,
+                              Text(
+                                "+91 ${data.data.phoneNumber}",
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 97, 91, 104),
                                 ),
+                              ),
+                              SizedBox(height: 25.h),
+                              Container(
+                                width: 120.w,
+                                height: 36.h,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.r),
-                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(40.r),
+                                  color: Color.fromARGB(25, 137, 26, 255),
                                 ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 30.h),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final result = await Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => EditProfile(),
-                                          ),
-                                        );
-                                        if (result == true) {
-                                          var box = Hive.box("data");
-                                          ref.invalidate(
-                                            profileController(
-                                              "${box.get("id").toString()}",
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: EditProfileBody(
-                                        icon: Icons.person_outlined,
-                                        name: 'Edit Profile',
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => EditProfile(),
                                       ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => PlanPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: EditProfileBody(
-                                        icon: Icons.menu,
-                                        name: 'Paid Plan',
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: EditProfileBody(
-                                        icon: Icons.help_outline,
-                                        name: 'Help & Support',
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    if (token != null) ...[
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 25.w,
-                                          right: 25.w,
+                                    );
+                                    if (result == true) {
+                                      var box = Hive.box("data");
+                                      ref.invalidate(
+                                        profileController(
+                                          "${box.get("id").toString()}",
                                         ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            box.clear();
-                                            Fluttertoast.showToast(
-                                              msg: "Logout successful",
-                                            );
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => LoginPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.logout,
-                                                color: Color.fromARGB(255, 97, 91, 104),
-                                                size: 26.sp,
-                                              ),
-                                              SizedBox(width: 8.w),
-                                              Text(
-                                                "Logout",
-                                                style: GoogleFonts.dmSans(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color.fromARGB(
-                                                    255,
-                                                    97,
-                                                    91,
-                                                    104,
-                                                  ),
-                                                ),
-                                              ),
-                                              Spacer(),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Color.fromARGB(255, 97, 91, 104),
-                                                size: 20.sp,
-                                              ),
-                                            ],
-                                          ),
+                                      );
+                                    }
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        color: Color.fromARGB(
+                                          255,
+                                          137,
+                                          26,
+                                          255,
                                         ),
+                                        size: 20.sp,
                                       ),
-                                    ] else ...[
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 25.w,
-                                          right: 25.w,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(
-                                                builder: (context) => SplashPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.logout,
-                                                color: Color.fromARGB(255, 97, 91, 104),
-                                                size: 26.sp,
-                                              ),
-                                              SizedBox(width: 8.w),
-                                              Text(
-                                                "Login",
-                                                style: GoogleFonts.dmSans(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color.fromARGB(
-                                                    255,
-                                                    97,
-                                                    91,
-                                                    104,
-                                                  ),
-                                                ),
-                                              ),
-                                              Spacer(),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Color.fromARGB(255, 97, 91, 104),
-                                                size: 20.sp,
-                                              ),
-                                            ],
+                                      SizedBox(width: 6.w),
+                                      Text(
+                                        "Edit Profile",
+                                        style: GoogleFonts.dmSans(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color.fromARGB(
+                                            255,
+                                            137,
+                                            26,
+                                            255,
                                           ),
                                         ),
                                       ),
                                     ],
-                                    SizedBox(height: 20.h),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 50.h),
-                          ],
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      if (error is UserNotLoggedInException) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.of(context).pushReplacementNamed('/login');
-                        });
-                      }
-                      return Center(child: Text(error.toString()));
-                    },
-                    loading: () => Center(child: CircularProgressIndicator()),
-                  ),
-
-
-                ]),
-
-
+                              activePlan.when(
+                                data: (snap) {
+                                  final box = Hive.box("data");
+                                  if (snap != null) {
+                                    box.put("plan_id", snap!.activePlan.planId);
+                                    // box.put('maxpost', snap.activePlan.plan);
+                                    box.put(
+                                      'maxpost',
+                                      snap.activePlan.plan.toJson(),
+                                    );
+                                  }
+                                  return snap == null
+                                      ? SizedBox()
+                                      : buildActivePlanCard(snap);
+                                },
+                                error:
+                                    (err, stack) => Center(child: SizedBox()),
+                                loading:
+                                    () => Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                              ),
+                              SizedBox(height: 40.h),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 20.w,
+                                  right: 20.w,
+                                ),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(
+                                    left: 20.w,
+                                    right: 20.w,
+                                    bottom: 30.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.r),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 30.h),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final result = await Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder:
+                                                  (context) => EditProfile(),
+                                            ),
+                                          );
+                                          if (result == true) {
+                                            var box = Hive.box("data");
+                                            ref.invalidate(
+                                              profileController(
+                                                "${box.get("id").toString()}",
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: EditProfileBody(
+                                          icon: Icons.person_outlined,
+                                          name: 'Edit Profile',
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) => PlanPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: EditProfileBody(
+                                          icon: Icons.menu,
+                                          name: 'Paid Plan',
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: EditProfileBody(
+                                          icon: Icons.help_outline,
+                                          name: 'Help & Support',
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      if (token != null) ...[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 25.w,
+                                            right: 25.w,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              box.clear();
+                                              Fluttertoast.showToast(
+                                                msg: "Logout successful",
+                                              );
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (context) => LoginPage(),
+                                                ),
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.logout,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    97,
+                                                    91,
+                                                    104,
+                                                  ),
+                                                  size: 26.sp,
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  "Logout",
+                                                  style: GoogleFonts.dmSans(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color.fromARGB(
+                                                      255,
+                                                      97,
+                                                      91,
+                                                      104,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    97,
+                                                    91,
+                                                    104,
+                                                  ),
+                                                  size: 20.sp,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ] else ...[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 25.w,
+                                            right: 25.w,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder:
+                                                      (context) => SplashPage(),
+                                                ),
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.logout,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    97,
+                                                    91,
+                                                    104,
+                                                  ),
+                                                  size: 26.sp,
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  "Login",
+                                                  style: GoogleFonts.dmSans(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color.fromARGB(
+                                                      255,
+                                                      97,
+                                                      91,
+                                                      104,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    97,
+                                                    91,
+                                                    104,
+                                                  ),
+                                                  size: 20.sp,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      SizedBox(height: 20.h),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 50.h),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        if (error is UserNotLoggedInException) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.of(
+                              context,
+                            ).pushReplacementNamed('/login');
+                          });
+                        }
+                        return Center(child: Text(error.toString()));
+                      },
+                      loading: () => Center(child: CircularProgressIndicator()),
+                    ),
+                  ],
+                ),
               ],
             ),
-
           ),
         ),
       ),
-
     );
-
   }
 
   Widget buildActivePlanCard(ActivePlan activePlan) {
@@ -1728,59 +1760,62 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
               actions: [
                 TextButton(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                    Navigator.of(dialogContext).pop();
-                  },
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () {
+                            Navigator.of(dialogContext).pop();
+                          },
                   child: Text(
                     'Cancel',
-                    style: GoogleFonts.montserrat(
-                      color: Colors.grey,
-                    ),
+                    style: GoogleFonts.montserrat(color: Colors.grey),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                    final gstNumber = gstController.text.trim();
-                    // if (gstNumber.isNotEmpty) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      await downloadInvoice(gstNumber);
-                      if (dialogContext.mounted) {
-                        Navigator.of(dialogContext).pop();
-                      }
-                    // } else {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(content: Text('Please enter a valid GST number')),
-                    //   );
-                    // }
-                  },
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () async {
+                            final gstNumber = gstController.text.trim();
+                            // if (gstNumber.isNotEmpty) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await downloadInvoice(gstNumber);
+                            if (dialogContext.mounted) {
+                              Navigator.of(dialogContext).pop();
+                            }
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackBar(content: Text('Please enter a valid GST number')),
+                            //   );
+                            // }
+                          },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.w),
                     ),
                   ),
-                  child: isLoading
-                      ? SizedBox(
-                    height: 20.h,
-                    width: 20.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                      : Text(
-                    'Download',
-                    style: GoogleFonts.montserrat(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child:
+                      isLoading
+                          ? SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            ),
+                          )
+                          : Text(
+                            'Download',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                 ),
               ],
             );
@@ -1801,7 +1836,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       String userId = box.get("id") ?? "0";
 
       // Base URL
-      String url = "https://classify.mymarketplace.co.in/api/generateInvoice?user_id=$userId";
+      String url =
+          "https://classify.mymarketplace.co.in/api/generateInvoice?user_id=$userId";
 
       // Agar GST diya hai to hi URL me add kare
       if (gstNumber.isNotEmpty) {
@@ -1835,17 +1871,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           const SnackBar(content: Text('Failed to download invoice.')),
         );
       }
-    }
-    catch (e) {
+    } catch (e) {
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
-
 }
-
 
 class EditProfileBody extends StatelessWidget {
   final IconData icon;
