@@ -191,7 +191,7 @@ class _ViewAllPageState extends ConsumerState<ViewAllPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, right: 20.w),
                   child: SizedBox(
-                    height: 50.h,
+                    // height: 50.h,
                     child: TextField(
                       controller: _searchController,
                       decoration: InputDecoration(

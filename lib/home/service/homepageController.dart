@@ -7,15 +7,17 @@ import 'package:shopping_app_olx/home/service/homepage.service.dart';
 
 import 'package:geolocator/geolocator.dart';
 
-
 final homepageController = FutureProvider<HomepageModel>((ref) async {
   var box = Hive.box("data");
   var user_id = box.get("id");
   final location = await printCurrentLocation();
   final homepageservice = HomePageService(await createDio());
-  return homepageservice.home('${location?.latitude}', '${location?.longitude}',user_id);
-}
-);
+  return homepageservice.home(
+    '${location?.latitude}',
+    '${location?.longitude}',
+    user_id,
+  );
+});
 
 final allCategoryController = FutureProvider<AllCategoryModel>((ref) async {
   final categoryService = HomePageService(await createDio());
@@ -55,15 +57,15 @@ Future<LocationModel?> printCurrentLocation() async {
 
   print('Latitude: ${position.latitude}');
   print('Longitude: ${position.longitude}');
-  return LocationModel(latitude: position.latitude.toString(), longitude: position.longitude.toString());
+  return LocationModel(
+    latitude: position.latitude.toString(),
+    longitude: position.longitude.toString(),
+  );
 }
 
-
-
-class LocationModel{
+class LocationModel {
   final String latitude;
   final String longitude;
 
   LocationModel({required this.latitude, required this.longitude});
-
 }
